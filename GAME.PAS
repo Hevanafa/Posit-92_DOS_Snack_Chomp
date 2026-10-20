@@ -6,7 +6,8 @@ program Game;
 
 uses
   CRT, DOS,
-  P92CORE, P92BMFON, P92KBD, P92MOUSE, P92TEX, P92TIME, P92VGA,
+  P92CORE, P92BMFON, P92KBD, P92MOUSE, P92TEX,
+  P92PANIC, P92TIME, P92VGA,
   ASSETS;
 
 const
@@ -21,7 +22,7 @@ type
   TFood = record
     active: boolean;
     foodType: TFoodType;
-    tick: double;
+    x: double;
     texture: PTexture;
     isHarming: boolean;
   end;
@@ -31,8 +32,30 @@ var
   gameTime: double;
   score: longint;
 
-  foodList: array[0..9] of TFood;
+  foodList: array[0..19] of TFood;
 
+
+procedure SpawnFood(const foodType: TFoodType; const x: double);
+var
+  a, idx: integer;
+begin
+  idx := -1;
+
+  for a:=0 to high(foodList) do
+    if not foodList[a].active then begin
+      idx := a;
+      break
+    end;
+
+  if idx < 0 then PanicHalt('SpawnFood: Food list is full!');
+
+  FillChar(foodList[idx], sizeof(TFood), 0);
+
+  foodList[idx].active := true;
+
+  { TODO: Init food item }
+
+end;
 
 { Engine region }
 

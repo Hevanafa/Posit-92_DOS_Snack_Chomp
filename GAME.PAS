@@ -22,6 +22,7 @@ type
     foodType: TFoodType;
     tick: double;
     texture: PTexture;
+    isHarming: boolean;
   end;
 
 var
@@ -33,6 +34,7 @@ var
 
   { Game state variables }
   gameTime: double;
+  score: longint;
 
   foodList: array[0..9] of TFood;
 
@@ -66,6 +68,7 @@ end;
 procedure OnReady; far;
 begin
   gameTime := 0.0;
+  score := 0;
 
   fillchar(foodList, sizeof(foodList), 0);
 end;

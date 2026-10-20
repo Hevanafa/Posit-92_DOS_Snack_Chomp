@@ -7,6 +7,22 @@ uses
   CRT, DOS,
   P92CORE, P92BMFON, P92KBD, P92MOUSE, P92TEX, P92TIME, P92VGA;
 
+const
+  PixelsPerTick = 100;
+
+type
+  TFoodType = (
+    FoodCookie,
+    FoodLemon
+  );
+
+  TFood = record
+    active: boolean;
+    foodType: TFoodType;
+    tick: double;
+    texture: PTexture;
+  end;
+
 var
   { Asset variables }
   texSpecimenP92: array[0..1] of TTexture;
@@ -14,6 +30,8 @@ var
 
   { Game state variables }
   gameTime: double;
+
+  foodList: array[0..9] of TFood;
 
 
 procedure PrintDefault(const text: string; const x, y: integer);
@@ -43,6 +61,8 @@ end;
 procedure OnReady; far;
 begin
   gameTime := 0.0;
+
+  fillchar(foodList, sizeof(foodList), 0);
 end;
 
 { Handle game state updates here }

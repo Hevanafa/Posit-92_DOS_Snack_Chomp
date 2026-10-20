@@ -6,10 +6,11 @@ program Game;
 
 uses
   CRT, DOS,
-  P92CORE, P92BMFON, P92KBD, P92MOUSE, P92TEX, P92TIME, P92VGA;
+  P92CORE, P92BMFON, P92KBD, P92MOUSE, P92TEX, P92TIME, P92VGA,
+  ASSETS;
 
 const
-  PixelsPerTick = 100;
+  FoodSpeed = 100;
 
 type
   TFoodType = (
@@ -26,23 +27,12 @@ type
   end;
 
 var
-  { Asset variables }
-  fontP92SansBold: TBMFont;
-
-  texSpecimenP92: array[0..1] of TTexture;
-  texLemon: TTexture;
-
   { Game state variables }
   gameTime: double;
   score: longint;
 
   foodList: array[0..9] of TFood;
 
-
-procedure PrintDefault(const text: string; const x, y: integer);
-begin
-  PrintBMFont(fontP92SansBold, text, x, y)
-end;
 
 { Engine region }
 
@@ -53,6 +43,7 @@ begin
   LoadTex(texSpecimenP92[1], 'IMG\SPP92_2.BMP');
 
   LoadTex(texLemon, 'IMG\LEMON.BMP');
+  LoadTex(texCookie, 'IMG\COOKIE.BMP');
 
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
 end;
@@ -91,6 +82,7 @@ begin
   Cls($4F);
 
   spr(texLemon, 10, 10);
+  spr(texCookie, 40, 10);
 
   if frac(gameTime * 1.5) >= 0.5 then
     Spr(texSpecimenP92[0], 148, 76)

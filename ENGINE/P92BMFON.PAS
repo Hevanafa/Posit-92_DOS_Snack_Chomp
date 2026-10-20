@@ -1,0 +1,365 @@
+{
+  BMFont utility unit
+  Part of Posit-92 game engine
+}
+
+unit P92BMFON;
+
+{$IFDEF FPC}{$MODE TP}{$ENDIF}
+
+interface
+
+uses P92TEX;
+
+type
+  PBMFontGlyph = ^TBMFontGlyph;
+  { Record types in Turbo Pascal are aligned to `word` by default, which is configurable via Compiler Options }
+  TBMFontGlyph = record
+    id: word;
+    x, y, width, height: word;  { 2, 4, 6, 8 }
+    xoffset, yoffset: integer;  { 10, 12 }
+    xadvance: integer; { 14 }
+    { page, chnl: byte; }
+  end;
+
+  PBMFont = ^TBMFont;
+  TBMFont = record
+    glyphs: array[0..255] of TBMFontGlyph;
+    lineHeight: word;
+    spacingX: integer;
+    texture: TTexture;
+  end;
+
+procedure InitBMFont(var font: TBMFont);
+
+{ This calls InitBMFont internally }
+procedure LoadBMFont(var font: TBMFont; const filename: string);
+
+{ This also frees the texture }
+procedure FreeBMFont(var font: TBMFont);
+
+procedure CloneBMFont(const src: TBMFont; var dest: TBMFont);
+
+{ Uses SprRegion internally -- easier to read
+  returns: xadvance
+}
+function PrintBMFontGlyph(const font: TBMFont; const ch: char; const x, y: integer): integer;
+procedure PrintBMFont(const font: TBMFont; const text: string; const x, y: integer);
+
+{ Returns xadvance }
+function PrintBMFontGlyphTint(const font: TBMFont; const ch: char; const x, y: integer; const colour: byte): integer;
+procedure PrintBMFontTint(const font: TBMFont; const text: string; const x, y: integer; const colour: byte);
+
+{ Returns accumulated xadvance }
+function MeasureBMFont(const font: TBMFont; const text: string): integer;
+
+procedure SetTransparencyKey(const value: byte);
+
+
+implementation
+
+uses P92CONV, P92LOG, P92PANIC, P92STR, P92VGA;
+
+var
+  transparencyKey: byte;
+
+procedure ParseBMFontGlyph(var destFont: TBMFont; line: string);
+var
+  newGlyph: TBMFontGlyph;
+  pairs: array[0..11] of string;
+  pairCount: word;
+  b: word;
+  kv: array[0..1] of string; { key-value pair }
+  glyphID: integer;
+begin
+{$IFDEF DEBUG}
+  writelog('ParseBMFontGlyph: Attempting to parse this line:');
+  writelog(line);
+{$ENDIF}
+
+  while Contains(line, '  ') do
+    line := ReplaceAll(line, '  ', ' ');
+
+  { Parse the whole line first, then check bounds }
+  glyphID := -1;
+  FillChar(newGlyph, sizeof(TBMFontGlyph), 0);
+
+  { assign glyph info }
+  pairCount := Split(line, ' ', pairs);
+
+  for b:=0 to pairCount-1 do begin
+    Split(pairs[b], '=', kv);
+
+    { case-of can't be used with strings in TP7 }
+    if kv[0] = 'id' then begin
+      glyphID := parseInt(kv[1]);
+
+      { writeLog('ID:' + i32str(glyphID)); }
+      newGlyph.id := glyphID;
+    end
+    else if kv[0] = 'x' then newGlyph.x := parseInt(kv[1])
+    else if kv[0] = 'y' then newGlyph.y := parseInt(kv[1])
+    else if kv[0] = 'width' then newGlyph.width := parseInt(kv[1])
+    else if kv[0] = 'height' then newGlyph.height := parseInt(kv[1])
+    else if kv[0] = 'xoffset' then newGlyph.xoffset := parseInt(kv[1])
+    else if kv[0] = 'yoffset' then newGlyph.yoffset := parseInt(kv[1])
+    else if kv[0] = 'xadvance' then newGlyph.xadvance := parseInt(kv[1]);
+  end;
+
+  if (low(destFont.glyphs) <= newGlyph.id) and
+      (newGlyph.id <= high(destFont.glyphs)) then
+    destFont.glyphs[newGlyph.id] := newGlyph;
+end;
+
+procedure InitBMFont(var font: TBMFont);
+var
+  len: integer;
+begin
+  len := high(font.glyphs) - Low(font.glyphs) + 1;
+  FillChar(font.glyphs, SizeOf(TBMFontGlyph) * len, 0);
+  font.lineHeight := 0;
+  font.spacingX := 0;
+
+  InitTex(font.texture);
+end;
+
+function IsLFOnly(const filename: string): boolean;
+var
+  f: file;
+  buffer: array[0..511] of byte;
+  bytesRead, a: word;
+  prev: byte;
+begin
+  IsLFOnly := false;
+
+  assign(f, filename);
+  reset(f, 1);  { 1 makes it a binary file type }
+  prev := 0;
+
+  while not eof(f) do begin
+    blockread(f, buffer, sizeof(buffer), bytesRead);
+
+    for a:=0 to bytesRead - 1 do
+      if buffer[a] = $0A then begin
+        IsLFOnly := (prev <> $0D);
+        close(f);
+        exit
+      end else
+        prev := buffer[a];
+  end;
+
+  close(f)
+end;
+
+procedure LoadBMFont(var font: TBMFont; const filename: string);
+var
+  b: integer;
+  f: text;
+
+  glyphCount: word;
+  line: string;
+  pairs: array[0..19] of string;
+  pairCount: word;
+  kv: array[0..1] of string; { key-value pair }
+
+  bitmapPath: string;
+begin
+  WriteLog('LoadBMFont: Loading font from ' + filename);
+
+  if IsLFOnly(filename) then
+    PanicHalt('LoadBMFont: The font definition line ends only with LF');
+
+  InitBMFont(font);
+
+  assign(f, filename);
+  {$I-} reset(f); {$I+}
+
+  if IOResult <> 0 then
+    PanicHalt('LoadBMFont: Couldn''t find "' + filename + '"!');
+
+  glyphCount := 0;
+
+  { First pass }
+  writelog('Entering first pass');
+
+  while not eof(f) do begin
+    readln(f, line);
+
+    while Contains(line, '  ') do
+      line := ReplaceAll(line, '  ', ' ');
+
+    if StartsWith(line, 'info') then begin
+      pairCount := Split(line, ' ', pairs);
+
+      for b:=0 to pairCount-1 do begin
+        Split(pairs[b], '=', kv);
+
+        if kv[0] = 'spacing' then begin
+          font.spacingX := ParseInt(copy(kv[1], 1, pos(',', kv[1]) - 1));
+
+          { writelog('Spacing (X)=' + i32str(font.spacingX)); }
+        end;
+      end;
+    end;
+
+    if StartsWith(line, 'common') then begin
+      pairCount := Split(line, ' ', pairs);
+
+      for b:=0 to pairCount-1 do begin
+        Split(pairs[b], '=', kv);
+
+        if kv[0] = 'lineHeight' then
+          font.lineHeight := parseInt(kv[1]);
+      end;
+    end;
+
+    if StartsWith(line, 'page') then begin
+      pairCount := Split(line, ' ', pairs);
+
+      for b:=0 to pairCount-1 do begin
+        Split(pairs[b], '=', kv);
+
+        if kv[0] = 'file' then begin
+          bitmapPath := ReplaceAll(kv[1], '"', '');
+          WriteLog('Found bitmapPath: "' + + '"');
+        end;
+      end;
+    end;
+  end;
+
+  close(f);
+
+  { Second pass: parse the glyphs }
+  writelog('Restarting the file reader');
+
+  {$I-} reset(f); {$I+}
+
+  if IOResult <> 0 then
+    PanicHalt('LoadBMFont Couldn''t start the second pass!');
+
+  writelog('Entering second pass');
+
+  while not eof(f) do begin
+    readln(f, line);
+
+    if StartsWith(line, 'char') then begin
+      ParseBMFontGlyph(font, line);
+      inc(glyphCount)
+    end;
+  end;
+
+  close(f);
+
+  LoadTex(font.texture, bitmapPath);
+  writeLog('LoadBMFont: Loaded ' + i32str(glyphCount) + ' glyphs');
+end;
+
+
+procedure FreeBMFont(var font: TBMFont);
+var
+  a, count: word;
+  len: word;
+begin
+  len := high(font.glyphs) + 1;
+  fillchar(font.glyphs, sizeof(TBMFontGlyph) * len, 0);
+  font.lineHeight := 0;
+
+  FreeTex(font.texture)
+end;
+
+procedure CloneBMFont(const src: TBMFont; var dest: TBMFont);
+begin
+  dest := src;
+  CloneTex(src.texture, dest.texture);
+end;
+
+
+function PrintBMFontGlyph(const font: TBMFont; const ch: char; const x, y: integer): integer;
+var
+  g: PBMFontGlyph;
+begin
+  PrintBMFontGlyph := font.glyphs[ord(ch)].xadvance;
+  g := @(font.glyphs[ord(ch)]);
+
+  SprRegion(
+    font.texture,
+    g^.x, g^.y, g^.width, g^.height,
+    x + g^.xoffset, y + g^.yoffset)
+end;
+
+procedure PrintBMFont(const font: TBMFont; const text: string; const x, y: integer);
+var
+  a: integer;
+  xOffset: integer;
+begin
+  xOffset := 0;
+
+  for a:=1 to length(text) do begin
+    { inc(xOffset, PrintBMFontGlyphFast(font, text[a], x + xOffset, y)); }
+    inc(xOffset, PrintBMFontGlyph(font, text[a], x + xOffset, y));
+
+    if a < length(text) then
+      inc(xOffset, font.spacingX);
+  end;
+end;
+
+
+{ Copied from PrintBMFontGlyph }
+function PrintBMFontGlyphTint(const font: TBMFont; const ch: char; const x, y: integer; const colour: byte): integer;
+var
+  g: PBMFontGlyph;
+begin
+  PrintBMFontGlyphTint := font.glyphs[ord(ch)].xadvance;
+  g := @(font.glyphs[ord(ch)]);
+
+  SprRegionTint(
+    font.texture,
+    g^.x, g^.y, g^.width, g^.height,
+    x + g^.xoffset, y + g^.yoffset,
+    colour)
+end;
+
+procedure PrintBMFontTint(const font: TBMFont; const text: string; const x, y: integer; const colour: byte);
+var
+  a: word;
+  { relative from x }
+  xOffset: integer;
+begin
+  xOffset := 0;
+
+  for a:=1 to length(text) do begin
+    inc(xOffset, PrintBMFontGlyphTint(font, text[a], x + xOffset, y, colour));
+
+    if a < length(text) then
+      inc(xOffset, font.spacingX);
+  end;
+end;
+
+
+function MeasureBMFont(const font: TBMFont; const text: string): integer;
+var
+  a: word;
+  glyph: PBMFontGlyph;
+  xOffset: integer;
+begin
+  xOffset := 0;
+
+  for a:=1 to length(text) do begin
+    glyph := @(font.glyphs[ord(text[a])]);
+    inc(xOffset, glyph^.xadvance);
+
+    if a < length(text) then
+      inc(xOffset, font.spacingX);
+  end;
+
+  MeasureBMFont := xOffset
+end;
+
+procedure SetTransparencyKey(const value: byte);
+begin
+  transparencyKey := value
+end;
+
+begin
+  SetTransparencyKey($0D);
+end.

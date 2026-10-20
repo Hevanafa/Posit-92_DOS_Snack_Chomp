@@ -1,6 +1,7 @@
 program Game;
 
 {$IFDEF FPC}{$MODE TP}{$ENDIF}
+{$Define Release}
 
 uses
   CRT, DOS,
@@ -47,7 +48,11 @@ end;
 { Handle game state updates here }
 procedure Update; far;
 begin
+{$ifndef release}
   if IsKeyDown(SC_ESCAPE) then SignalDone;
+{$else}
+  if IsKeyDown(SC_LEFT_SHIFT) and IsKeyDown(SC_Q) then SignalDone;
+{$endif}
 
   gameTime := gameTime + DeltaTime
 end;

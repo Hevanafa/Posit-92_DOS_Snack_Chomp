@@ -1,2 +1,5 @@
+# Lazarus stuff
+*.lps
+
 # Turbo Pascal
 TP/

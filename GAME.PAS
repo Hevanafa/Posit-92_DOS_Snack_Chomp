@@ -4,22 +4,31 @@ program Game;
 
 uses
   CRT, DOS,
-  P92CORE, P92KBD, P92MOUSE, P92TEX, P92TIME, P92VGA;
+  P92CORE, P92BMFON, P92KBD, P92MOUSE, P92TEX, P92TIME, P92VGA;
 
 var
   { Asset variables }
-  { texDosuEXE: array[0..1] of TTexture; }
   texSpecimenP92: array[0..1] of TTexture;
+  fontP92SansBold: TBMFont;
 
   { Game state variables }
   gameTime: double;
 
 
+procedure PrintDefault(const text: string; const x, y: integer);
+begin
+  PrintBMFont(fontP92SansBold, text, x, y)
+end;
+
+{ Engine region }
+
 { Load assets here }
 procedure OnPreload; far;
 begin
-  LoadTex(texSpecimenP92[0], 'IMG/SPP92_1.BMP');
-  LoadTex(texSpecimenP92[1], 'IMG/SPP92_2.BMP');
+  LoadTex(texSpecimenP92[0], 'IMG\SPP92_1.BMP');
+  LoadTex(texSpecimenP92[1], 'IMG\SPP92_2.BMP');
+
+  LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
 end;
 
 { Free all the resources here }
@@ -53,7 +62,7 @@ begin
   else
     Spr(texSpecimenP92[1], 148, 76);
 
-  Print('Hello world!', 160-48, 120, 15);
+  PrintDefault('Hello world!', 160-48, 120);
 end;
 
 

@@ -1,5 +1,12 @@
 # Lazarus stuff
+lib/
 *.lps
 
 # Turbo Pascal
 TP/
+*.BAK
+*.TPU
+*.EXE
+
+# Auto-generated stuff
+LOG.TXT

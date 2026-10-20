@@ -1,7 +1,8 @@
 program Game;
 
 {$IFDEF FPC}{$MODE TP}{$ENDIF}
-{$Define Release}
+
+{Define Release}
 
 uses
   CRT, DOS,
@@ -25,8 +26,10 @@ type
 
 var
   { Asset variables }
-  texSpecimenP92: array[0..1] of TTexture;
   fontP92SansBold: TBMFont;
+
+  texSpecimenP92: array[0..1] of TTexture;
+  texLemon: TTexture;
 
   { Game state variables }
   gameTime: double;
@@ -46,6 +49,8 @@ procedure OnPreload; far;
 begin
   LoadTex(texSpecimenP92[0], 'IMG\SPP92_1.BMP');
   LoadTex(texSpecimenP92[1], 'IMG\SPP92_2.BMP');
+
+  LoadTex(texLemon, 'IMG\LEMON.BMP');
 
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
 end;
@@ -81,6 +86,8 @@ end;
 procedure Draw; far;
 begin
   Cls($4F);
+
+  spr(texLemon, 10, 10);
 
   if frac(gameTime * 1.5) >= 0.5 then
     Spr(texSpecimenP92[0], 148, 76)

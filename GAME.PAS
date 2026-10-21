@@ -21,7 +21,8 @@ const
 type
   TFoodType = (
     FoodCookie,
-    FoodLemon
+    FoodLemon,
+    FoodBomb
   );
 
   TFood = record
@@ -72,6 +73,11 @@ begin
       foodList[idx].texture := @texCookie;
     FoodLemon:
       foodList[idx].texture := @texLemon;
+
+    FoodBomb: begin
+      foodList[idx].texture := @texBomb;
+      foodList[idx].isHarming := true;
+    end;
   end;
 end;
 

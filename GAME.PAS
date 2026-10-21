@@ -40,6 +40,7 @@ type
   TFloatingText = record
     active: boolean;
     text: string;
+    endTick: double;
     pos: TPoint;
     vel: TVector;
   end;
@@ -123,6 +124,7 @@ begin
   floatingTexts[idx].pos.x := x;
   floatingTexts[idx].pos.y := y;
   floatingTexts[idx].vel.y := -15.0;
+  floatingTexts[idx].endTick := gameTime + 2.0;
 end;
 
 { Engine region }
@@ -231,6 +233,11 @@ begin
 
   for a:=0 to high(floatingTexts) do begin
     if not floatingTexts[a].active then continue;
+
+    if gameTime >= floatingTexts[a].endTick then begin
+      floatingTexts[a].active := false;
+      continue
+    end;
 
     floatingTexts[a].pos.y := floatingTexts[a].pos.y + floatingTexts[a].vel.y;
     floatingTexts[a].pos.x := floatingTexts[a].pos.x + floatingTexts[a].vel.x;

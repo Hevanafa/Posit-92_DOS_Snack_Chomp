@@ -33,6 +33,7 @@ var
   score: longint;
 
   foodList: array[0..19] of TFood;
+  isMouthOpen: boolean;
 
 
 procedure SpawnFood(const foodType: TFoodType; const x: double);
@@ -85,6 +86,8 @@ begin
   score := 0;
 
   fillchar(foodList, sizeof(foodList), 0);
+
+  isMouthOpen := true;
 end;
 
 { Handle game state updates here }
@@ -95,6 +98,8 @@ begin
 {$else}
   if IsKeyDown(SC_LEFT_SHIFT) and IsKeyDown(SC_Q) then SignalDone;
 {$endif}
+
+  isMouthOpen := not IsKeyDown(SC_SPACE);
 
   gameTime := gameTime + DeltaTime
 end;

@@ -57,8 +57,15 @@ begin
 
   foodList[idx].active := true;
 
-  { TODO: Init food item }
+  foodList[idx].foodType := foodType;
+  foodList[idx].x := x;
 
+  case foodType of
+    FoodCookie:
+      foodList[idx].texture := @texCookie;
+    FoodLemon:
+      foodList[idx].texture := @texLemon;
+  end;
 end;
 
 { Engine region }

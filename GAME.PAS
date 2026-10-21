@@ -9,7 +9,7 @@ program Game;
 
 uses
   CRT, DOS,
-  P92CORE, P92KBD, P92MOUSE,
+  P92CORE, P92CONV, P92KBD, P92MOUSE,
   P92BMFON, P92GRAPH, P92TEX,
   P92PANIC, P92TIME, P92VGA,
   ASSETS;
@@ -131,6 +131,12 @@ begin
     if not foodList[a].active then continue;
 
     foodList[a].x := foodList[a].x - FoodSpeed * DeltaTime;
+
+    if foodList[a].x < JudgementX then begin
+      { case foodList[a].foodType of
+      end; }
+      inc(score, 100);
+    end;
   end;
 
   if gameTime >= nextSpawnTick then begin
@@ -157,6 +163,8 @@ begin
   for a:=0 to high(foodList) do begin
     if not foodList[a].active then continue;
 
+    VLine(trunc(foodList[a].x), 68, 132, $0F);
+
     spr(foodList[a].texture^,
       trunc(foodList[a].x - foodList[a].texture^.width / 2),
       100)
@@ -169,12 +177,9 @@ begin
 
   vline(JudgementX, 68, 132, $0F);
 
-  if frac(gameTime * 1.5) >= 0.5 then
-    Spr(texSpecimenP92[0], 148, 76)
-  else
-    Spr(texSpecimenP92[1], 148, 76);
+  { HUD stuff }
 
-  PrintDefault('Hello world!', 160-48, 120);
+  PrintDefault(i32str(score), 8, 8);
 end;
 
 

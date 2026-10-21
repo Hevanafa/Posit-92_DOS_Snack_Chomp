@@ -116,8 +116,13 @@ begin
 
   if idx < 0 then PanicHalt('Floating text pool is full!');
 
-  { TODO: Assign the fields }
+  fillchar(floatingTexts[idx], sizeof(TFloatingText), 0);
 
+  floatingTexts[idx].active := true;
+  floatingTexts[idx].text := text;
+  floatingTexts[idx].pos.x := x;
+  floatingTexts[idx].pos.y := y;
+  floatingTexts[idx].vel.y := -15.0;
 end;
 
 { Engine region }

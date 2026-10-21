@@ -17,6 +17,7 @@ uses
 const
   FoodSpeed = 100;
   JudgementX = 64;
+  MaxLives = 4;
 
 type
   TFoodType = (
@@ -96,6 +97,9 @@ begin
   LoadTex(texKaylaNormal, 'IMG\KAY_NORM.BMP');
   LoadTex(texKaylaOpen, 'IMG\KAY_OPEN.BMP');
 
+  LoadTex(texHeartEmpty, 'IMG\HRTEMPTY.BMP');
+  LoadTex(texHeartFill, 'IMG\HRTFILL.BMP');
+
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
 end;
 
@@ -112,7 +116,7 @@ begin
   gameTime := 0.0;
   score := 0;
 
-  lives := 3;
+  lives := MaxLives;
   invincibleEndTick := 0.0;
 
   fillchar(foodList, sizeof(foodList), 0);
@@ -201,9 +205,16 @@ begin
   else
     spr(texKaylaNormal, 32, 68);
 
-  vline(JudgementX, 68, 132, $0F);
+  VLine(JudgementX, 68, 132, $0F);
 
   { HUD stuff }
+
+  for a:=0 to MaxLives - 1 do
+    spr(texHeartEmpty, 160 + a * 20, 8);
+
+  if lives > 0 then
+    for a:=0 to lives - 1 do
+      spr(texHeartFill, 160 + a * 20, 8);
 
   PrintDefault(i32str(score), 8, 8);
 end;

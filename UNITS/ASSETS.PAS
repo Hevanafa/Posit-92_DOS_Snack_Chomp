@@ -8,8 +8,9 @@ var
   fontP92SansBold: TBMFont;
 
   texSpecimenP92: array[0..1] of TTexture;
-  texLemon, texCookie, texBomb: TTexture;
-  texKaylaNormal, texKaylaOpen: TTexture;
+  texLemon, texCookie, texBomb,
+  texKaylaNormal, texKaylaOpen,
+  texHeartFill, texHeartEmpty: TTexture;
 
 procedure PrintDefault(const text: string; const x, y: integer);
 

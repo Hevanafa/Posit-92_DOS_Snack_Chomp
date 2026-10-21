@@ -15,7 +15,7 @@ uses
   ASSETS;
 
 const
-  FoodSpeed = 100;
+  FoodSpeed = 120;
   JudgementX = 64;
   MaxLives = 4;
 
@@ -42,6 +42,7 @@ var
   isMouthOpen: boolean;
   lives: integer;
   invincibleEndTick: double;
+  isBlinkingVisible: boolean;
 
   foodList: array[0..19] of TFood;
   { uses gameTime }
@@ -84,7 +85,7 @@ end;
 
 function IsInvincible: boolean;
 begin
-  IsInvincible := gameTime >= invincibleEndTick;
+  IsInvincible := gameTime < invincibleEndTick;
 end;
 
 { Engine region }
@@ -126,6 +127,7 @@ begin
 
   fillchar(foodList, sizeof(foodList), 0);
 
+  isBlinkingVisible := true;
   isMouthOpen := true;
 
   nextSpawnTick := 2.0;
@@ -145,6 +147,7 @@ begin
 {$endif}
 
   isMouthOpen := not IsKeyDown(SC_SPACE);
+  isBlinkingVisible := not isBlinkingVisible;
 
   { Handle gameplay state }
 
@@ -211,12 +214,16 @@ begin
       100)
   end;
 
-  if isMouthOpen then
-    spr(texKaylaOpen, 32, 68)
-  else
-    spr(texKaylaNormal, 32, 68);
+  if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
+    if isMouthOpen then
+      spr(texKaylaOpen, 32, 68)
+    else
+      spr(texKaylaNormal, 32, 68);
+  end;
 
+{$ifndef release}
   VLine(JudgementX, 68, 132, $0F);
+{$endif}
 
   { HUD stuff }
 

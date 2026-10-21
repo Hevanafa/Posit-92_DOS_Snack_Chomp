@@ -32,8 +32,11 @@ var
   gameTime: double;
   score: longint;
 
-  foodList: array[0..19] of TFood;
   isMouthOpen: boolean;
+
+  foodList: array[0..19] of TFood;
+  { uses gameTime }
+  nextSpawnTick: double;
 
 
 procedure SpawnFood(const foodType: TFoodType; const x: double);
@@ -88,6 +91,8 @@ begin
   fillchar(foodList, sizeof(foodList), 0);
 
   isMouthOpen := true;
+
+  nextSpawnTick := 2.0;
 end;
 
 { Handle game state updates here }
@@ -100,6 +105,11 @@ begin
 {$endif}
 
   isMouthOpen := not IsKeyDown(SC_SPACE);
+
+  if gameTime >= nextSpawnTick then begin
+    nextSpawnTick := gameTime + 0.5;
+    SpawnFood(random(high(TFoodType) + 1), VGAWidth + 10);
+  end;
 
   gameTime := gameTime + DeltaTime
 end;

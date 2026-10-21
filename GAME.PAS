@@ -165,7 +165,7 @@ begin
   invincibleEndTick := 0.0;
 
   fillchar(foodList, sizeof(foodList), 0);
-  fillchar(floatingTexts);
+  fillchar(floatingTexts, sizeof(floatingTexts), 0);
 
   isBlinkingVisible := true;
   isMouthOpen := true;
@@ -215,6 +215,7 @@ begin
       if isMouthOpen then begin
         { Eat food }
         inc(score, 100);
+        SpawnFloatingText('+100', JudgementX, 100);
       end;
 
       foodList[a].active := false;
@@ -239,8 +240,8 @@ begin
       continue
     end;
 
-    floatingTexts[a].pos.y := floatingTexts[a].pos.y + floatingTexts[a].vel.y;
-    floatingTexts[a].pos.x := floatingTexts[a].pos.x + floatingTexts[a].vel.x;
+    floatingTexts[a].pos.y := floatingTexts[a].pos.y + floatingTexts[a].vel.y * DeltaTime;
+    floatingTexts[a].pos.x := floatingTexts[a].pos.x + floatingTexts[a].vel.x * DeltaTime;
   end;
 
   gameTime := gameTime + DeltaTime
@@ -278,6 +279,13 @@ begin
 {$endif}
 
   { HUD stuff }
+
+  for a:=0 to high(floatingTexts) do begin
+    if not floatingTexts[a].active then continue;
+
+    with floatingTexts[a] do
+      PrintDefault(text, trunc(pos.x), trunc(pos.y));
+  end;
 
   for a:=0 to MaxLives - 1 do
     spr(texHeartEmpty, 160 + a * 20, 8);

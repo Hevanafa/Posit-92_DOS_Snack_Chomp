@@ -1,6 +1,9 @@
+{$IFDEF FPC}
+library Game;
+{$MODE TP}
+{$ELSE}
 program Game;
-
-{$IFDEF FPC}{$MODE TP}{$ENDIF}
+{$ENDIF}
 
 {Define Release}
 
@@ -115,7 +118,10 @@ begin
 
   if gameTime >= nextSpawnTick then begin
     nextSpawnTick := gameTime + 0.5;
-    SpawnFood(random(high(TFoodType) + 1), VGAWidth + 10);
+
+    SpawnFood(
+      TFoodType(random(ord(high(TFoodType)) + 1)),
+      VGAWidth + 10);
   end;
 
   gameTime := gameTime + DeltaTime

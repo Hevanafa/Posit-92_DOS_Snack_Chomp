@@ -16,7 +16,7 @@ uses
 
 const
   FoodSpeed = 100;
-  JudgementX = 90;
+  JudgementX = 64;
 
 type
   TFoodType = (
@@ -148,7 +148,12 @@ begin
       { case foodList[a].foodType of
       end; }
 
-      if foodList[a].isHarming and (gameTime < invincibleEndTick) then begin
+      if foodList[a].isHarming then begin
+        if (gameTime >= invincibleEndTick) then begin
+          invincibleEndTick := gameTime + 3.0;
+          dec(lives)
+        end;
+
         foodList[a].active := false;
         continue
       end;
@@ -192,9 +197,9 @@ begin
   end;
 
   if isMouthOpen then
-    spr(texKaylaOpen, 8, 68)
+    spr(texKaylaOpen, 32, 68)
   else
-    spr(texKaylaNormal, 8, 68);
+    spr(texKaylaNormal, 32, 68);
 
   vline(JudgementX, 68, 132, $0F);
 

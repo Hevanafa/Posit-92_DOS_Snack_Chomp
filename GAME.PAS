@@ -52,12 +52,15 @@ var
 
   isMouthOpen: boolean;
   lives: integer;
+  { uses gameTime }
   invincibleEndTick: double;
   isBlinkingVisible: boolean;
 
   foodList: array[0..19] of TFood;
   { uses gameTime }
   nextSpawnTick: double;
+
+  floatingTexts: array[0..9] of TFloatingText;
 
 
 procedure SpawnFood(const foodType: TFoodType; const x: double);
@@ -99,6 +102,24 @@ begin
   IsInvincible := gameTime < invincibleEndTick;
 end;
 
+procedure SpawnFloatingText(const text: string; const x, y: double);
+var
+  a, idx: integer;
+begin
+  idx := -1;
+
+  for a:=0 to high(floatingTexts) do
+    if not floatingTexts[a].active then begin
+      idx := a;
+      break
+    end;
+
+  if idx < 0 then PanicHalt('Floating text pool is full!');
+
+  { TODO: Assign the fields }
+
+end;
+
 { Engine region }
 
 { Load assets here }
@@ -137,6 +158,7 @@ begin
   invincibleEndTick := 0.0;
 
   fillchar(foodList, sizeof(foodList), 0);
+  fillchar(floatingTexts);
 
   isBlinkingVisible := true;
   isMouthOpen := true;

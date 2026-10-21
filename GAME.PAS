@@ -82,6 +82,11 @@ begin
   end;
 end;
 
+function IsInvincible: boolean;
+begin
+  IsInvincible := gameTime >= invincibleEndTick;
+end;
+
 { Engine region }
 
 { Load assets here }
@@ -153,7 +158,9 @@ begin
       end; }
 
       if foodList[a].isHarming then begin
-        if (gameTime >= invincibleEndTick) then begin
+        { Eat harming food }
+
+        if isMouthOpen and (not IsInvincible) then begin
           invincibleEndTick := gameTime + 3.0;
           dec(lives)
         end;
@@ -162,7 +169,11 @@ begin
         continue
       end;
 
-      inc(score, 100);
+      if isMouthOpen then begin
+        { Eat food }
+        inc(score, 100);
+      end;
+
       foodList[a].active := false;
 
       continue

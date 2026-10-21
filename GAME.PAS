@@ -152,7 +152,9 @@ begin
   for a:=0 to high(foodList) do begin
     if not foodList[a].active then continue;
 
-    spr(foodList[a].texture^, trunc(foodList[a].x), 100)
+    spr(foodList[a].texture^,
+      trunc(foodList[a].x - foodList[a].texture^.width / 2),
+      100)
   end;
 
   if frac(gameTime * 1.5) >= 0.5 then

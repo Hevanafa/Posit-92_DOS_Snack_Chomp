@@ -136,6 +136,9 @@ begin
       { case foodList[a].foodType of
       end; }
       inc(score, 100);
+      foodList[a].active := false;
+
+      continue
     end;
   end;
 

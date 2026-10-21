@@ -9,12 +9,14 @@ program Game;
 
 uses
   CRT, DOS,
-  P92CORE, P92BMFON, P92KBD, P92MOUSE, P92TEX,
+  P92CORE, P92KBD, P92MOUSE,
+  P92BMFON, P92GRAPH, P92TEX,
   P92PANIC, P92TIME, P92VGA,
   ASSETS;
 
 const
   FoodSpeed = 100;
+  JudgementX = 90;
 
 type
   TFoodType = (
@@ -81,6 +83,9 @@ begin
 
   LoadTex(texLemon, 'IMG\LEMON.BMP');
   LoadTex(texCookie, 'IMG\COOKIE.BMP');
+
+  LoadTex(texKaylaNormal, 'IMG\KAY_NORM.BMP');
+  LoadTex(texKaylaOpen, 'IMG\KAY_OPEN.BMP');
 
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
 end;
@@ -156,6 +161,13 @@ begin
       trunc(foodList[a].x - foodList[a].texture^.width / 2),
       100)
   end;
+
+  if isMouthOpen then
+    spr(texKaylaOpen, 8, 68)
+  else
+    spr(texKaylaNormal, 8, 68);
+
+  vline(JudgementX, 68, 132, $0F);
 
   if frac(gameTime * 1.5) >= 0.5 then
     Spr(texSpecimenP92[0], 148, 76)

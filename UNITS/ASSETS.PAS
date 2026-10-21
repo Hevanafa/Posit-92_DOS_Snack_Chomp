@@ -9,6 +9,7 @@ var
 
   texSpecimenP92: array[0..1] of TTexture;
   texLemon, texCookie: TTexture;
+  texKaylaNormal, texKaylaOpen: TTexture;
 
 procedure PrintDefault(const text: string; const x, y: integer);
 

@@ -229,6 +229,13 @@ begin
       VGAWidth + 10);
   end;
 
+  for a:=0 to high(floatingTexts) do begin
+    if not floatingTexts[a].active then continue;
+
+    floatingTexts[a].pos.y := floatingTexts[a].pos.y + floatingTexts[a].vel.y;
+    floatingTexts[a].pos.x := floatingTexts[a].pos.x + floatingTexts[a].vel.x;
+  end;
+
   gameTime := gameTime + DeltaTime
 end;
 

@@ -9,7 +9,7 @@ program Game;
 
 uses
   CRT, DOS,
-  P92CORE, P92CONV, P92KBD, P92MOUSE,
+  P92CORE, P92CONV, P92GEOM, P92KBD, P92MOUSE,
   P92BMFON, P92GRAPH, P92TEX,
   P92PANIC, P92TIME, P92VGA,
   ASSETS;
@@ -20,6 +20,9 @@ const
   MaxLives = 4;
 
 type
+  { 2D vector }
+  TVector = TPoint;
+
   TFoodType = (
     FoodCookie,
     FoodLemon,
@@ -33,6 +36,14 @@ type
     texture: PTexture;
     isHarming: boolean;
   end;
+
+  TFloatingText = record
+    active: boolean;
+    text: string;
+    pos: TPoint;
+    vel: TVector;
+  end;
+
 
 var
   { Game state variables }

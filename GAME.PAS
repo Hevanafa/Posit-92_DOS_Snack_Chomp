@@ -192,6 +192,7 @@ begin
   DefaultP92AppConfig(appConfig);
 
   appConfig.EnableDrawFPS := true;
+  appConfig.WaitMode := P92WaitVSync;
 
   @appConfig.OnPreload := @OnPreload;
   @appConfig.OnReady := @OnReady;

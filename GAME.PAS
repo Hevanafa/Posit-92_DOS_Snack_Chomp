@@ -107,7 +107,11 @@ end;
 
 { Handle game state updates here }
 procedure Update; far;
+var
+  a: integer;
 begin
+  { Handle inputs }
+
 {$ifndef release}
   if IsKeyDown(SC_ESCAPE) then SignalDone;
 {$else}
@@ -115,6 +119,14 @@ begin
 {$endif}
 
   isMouthOpen := not IsKeyDown(SC_SPACE);
+
+  { Handle gameplay state }
+
+  for a:=0 to high(foodList) do begin
+    if not foodList[a].active then continue;
+
+    foodList[a].x := foodList[a].x - FoodSpeed * DeltaTime;
+  end;
 
   if gameTime >= nextSpawnTick then begin
     nextSpawnTick := gameTime + 0.5;
@@ -129,11 +141,19 @@ end;
 
 { Render logic }
 procedure Draw; far;
+var
+  a: integer;
 begin
   Cls($4F);
 
-  spr(texLemon, 10, 10);
-  spr(texCookie, 40, 10);
+  { spr(texLemon, 10, 10);
+  spr(texCookie, 40, 10); }
+
+  for a:=0 to high(foodList) do begin
+    if not foodList[a].active then continue;
+
+    spr(foodList[a].texture^, trunc(foodList[a].x), 100)
+  end;
 
   if frac(gameTime * 1.5) >= 0.5 then
     Spr(texSpecimenP92[0], 148, 76)
@@ -148,6 +168,8 @@ var
   appConfig: TP92AppConfig;
 begin
   DefaultP92AppConfig(appConfig);
+
+  appConfig.EnableDrawFPS := true;
 
   @appConfig.OnPreload := @OnPreload;
   @appConfig.OnReady := @OnReady;

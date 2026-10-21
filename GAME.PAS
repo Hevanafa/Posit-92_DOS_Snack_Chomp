@@ -38,6 +38,8 @@ var
   score: longint;
 
   isMouthOpen: boolean;
+  lives: integer;
+  invincibleEndTick: double;
 
   foodList: array[0..19] of TFood;
   { uses gameTime }
@@ -83,6 +85,7 @@ begin
 
   LoadTex(texLemon, 'IMG\LEMON.BMP');
   LoadTex(texCookie, 'IMG\COOKIE.BMP');
+  LoadTex(texBomb, 'IMG\BOMB.BMP');
 
   LoadTex(texKaylaNormal, 'IMG\KAY_NORM.BMP');
   LoadTex(texKaylaOpen, 'IMG\KAY_OPEN.BMP');
@@ -102,6 +105,9 @@ procedure OnReady; far;
 begin
   gameTime := 0.0;
   score := 0;
+
+  lives := 3;
+  invincibleEndTick := 0.0;
 
   fillchar(foodList, sizeof(foodList), 0);
 
@@ -135,6 +141,12 @@ begin
     if foodList[a].x < JudgementX then begin
       { case foodList[a].foodType of
       end; }
+
+      if foodList[a].isHarming and (gameTime < invincibleEndTick) then begin
+        foodList[a].active := false;
+        continue
+      end;
+
       inc(score, 100);
       foodList[a].active := false;
 

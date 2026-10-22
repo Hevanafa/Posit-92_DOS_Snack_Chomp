@@ -210,8 +210,11 @@ end;
 { Handle game state updates here }
 procedure Update; far;
 var
+  now: double;
   a: integer;
 begin
+  now := GetTimer;
+
   { Handle inputs }
 
 {$ifndef release}
@@ -287,7 +290,13 @@ begin
       floatingTexts[a].pos.x := floatingTexts[a].pos.x + floatingTexts[a].vel.x * DeltaTime;
     end;
 
-    gameTime := gameTime + DeltaTime
+    if countdownNumber > 0 then begin
+      if now >= countdownNextTick then begin
+        countdownNextTick := now + 1.0;
+        dec(countdownNumber);
+      end;
+    end else
+      gameTime := gameTime + DeltaTime;
   end;
 end;
 
@@ -334,6 +343,13 @@ begin
   end;
 
   if actualGameState = GameStatePlaying then begin
+    if countdownNumber > 0 then begin
+      s := I32Str(countdownNumber);
+      w := MeasureDefault(s);
+
+      PrintDefault(s, (VGAWidth - w) shr 1, 100);
+    end;
+
     for a:=0 to high(floatingTexts) do begin
       if not floatingTexts[a].active then continue;
 

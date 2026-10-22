@@ -223,14 +223,11 @@ begin
       les di, backBuffer
       add di, destOffset
 
-      { Load DH with transparencyKey }
-      mov dh, TransparencyKey
-
       { Load DS:SI with the source tex's data }
       lds si, pixelData
       add si, srcOffset
       mov cx, drawCount
-      mov ah, dh
+      mov ah, TransparencyKey
 
     @loop:
       lodsb

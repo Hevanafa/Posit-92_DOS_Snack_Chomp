@@ -333,10 +333,7 @@ begin
       if not foodList[a].isFalling then begin
         foodList[a].pos.x := foodList[a].pos.x - ConveyorSpeed * DeltaTime;
 
-        if foodList[a].x < JudgementX then begin
-          { case foodList[a].foodType of
-          end; }
-
+        if foodList[a].pos.x < JudgementX then begin
           if foodList[a].isHarming then begin
             { Eat harming food }
 
@@ -368,12 +365,12 @@ begin
       pick := random(4);
 
       case pick of
-        1: SpawnFood(FoodBomb, VGAWidth + 10);
+        1: SpawnFood(FoodBomb, PipeX + 8, PipeY);
         else
           SpawnFood(
             SafeFoodList[
               random(high(SafeFoodList) + 1)],
-              VGAWidth + 10);
+              PipeX + 8, PipeY);
       end;
     end;
 
@@ -424,10 +421,12 @@ begin
   for a:=0 to high(foodList) do begin
     if not foodList[a].active then continue;
 
+    { Debug judgement line }
     { VLine(trunc(foodList[a].x), 68, 132, $0F); }
 
-    spr(foodList[a].texture^,
-      trunc(foodList[a].x - foodList[a].texture^.width / 2),
+    Spr(
+      foodList[a].texture^,
+      trunc(foodList[a].pos.x - foodList[a].texture^.width / 2),
       ConveyorItemY)
   end;
 

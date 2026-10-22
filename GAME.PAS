@@ -26,6 +26,7 @@ const
   PipeY = 0;
 
   JudgementX = 64;
+  ConveyorItemY = 100;
   MaxLives = 4;
 
 type
@@ -346,11 +347,11 @@ begin
   for a:=0 to high(foodList) do begin
     if not foodList[a].active then continue;
 
-    VLine(trunc(foodList[a].x), 68, 132, $0F);
+    { VLine(trunc(foodList[a].x), 68, 132, $0F); }
 
     spr(foodList[a].texture^,
       trunc(foodList[a].x - foodList[a].texture^.width / 2),
-      100)
+      ConveyorItemY)
   end;
 
   if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin

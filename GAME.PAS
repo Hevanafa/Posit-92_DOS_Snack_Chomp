@@ -365,12 +365,12 @@ begin
       pick := random(4);
 
       case pick of
-        1: SpawnFood(FoodBomb, PipeX + 8, PipeY);
+        1: SpawnFood(FoodBomb, PipeX + 20, PipeY);
         else
           SpawnFood(
             SafeFoodList[
               random(high(SafeFoodList) + 1)],
-              PipeX + 8, PipeY);
+              PipeX + 20, PipeY);
       end;
     end;
 
@@ -403,7 +403,7 @@ var
   w: integer;
   s: string;
   colour: byte;
-  shiftX: integer;
+  shiftX, renderX: integer;
   now: double;
 begin
   now := GetTimer;
@@ -424,10 +424,8 @@ begin
     { Debug judgement line }
     { VLine(trunc(foodList[a].x), 68, 132, $0F); }
 
-    Spr(
-      foodList[a].texture^,
-      trunc(foodList[a].pos.x - foodList[a].texture^.width / 2),
-      ConveyorItemY)
+    renderX := trunc(foodList[a].pos.x - foodList[a].texture^.width / 2);
+    Spr(foodList[a].texture^, renderX, trunc(foodList[a].pos.y));
   end;
 
   UnsafeSpr(texPipe, PipeX, PipeY);

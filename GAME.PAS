@@ -32,6 +32,8 @@ const
   JudgementX = 64;
   ConveyorItemY = 100;
   MaxLives = 4;
+  HeartBarX = 20;
+  HeartBarY = 50;
 
 type
   TGameState = (
@@ -274,6 +276,7 @@ begin
   LoadTex(texPipe, 'IMG\PIPE.BMP');
 
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
+  LoadBMFont(fontX14y20pxScoreDozer, 'FONTS\SCOREDOZ.TXT');
 end;
 
 { Free all the resources here }
@@ -477,13 +480,13 @@ begin
     end;
 
     for a:=0 to MaxLives - 1 do
-      spr(texHeartEmpty, 160 + a * 20, 8);
+      spr(texHeartEmpty, HeartBarX + a * 20, HeartBarY);
 
     if lives > 0 then
       for a:=0 to lives - 1 do
-        spr(texHeartFill, 160 + a * 20, 8);
+        spr(texHeartFill, HeartBarX + a * 20, HeartBarY);
 
-    PrintDefault(i32str(score), 8, 8);
+    PrintScoreDozer(i32str(score), 8, 8);
   end;
 end;
 

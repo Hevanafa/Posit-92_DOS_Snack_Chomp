@@ -20,6 +20,12 @@ const
   MaxLives = 4;
 
 type
+  TGameState = (
+    GameStateTitle,
+    GameStatePlaying,
+    GameStateOver
+  );
+
   { 2D vector }
   TVector = TPoint;
 
@@ -48,6 +54,7 @@ type
 
 var
   { Game state variables }
+  actualGameState: TGameState;
   gameTime: double;
   score: longint;
 
@@ -158,6 +165,7 @@ end;
 { Init game state variables here }
 procedure OnReady; far;
 begin
+  actualGameState := GameStateTitle;
   gameTime := 0.0;
   score := 0;
 

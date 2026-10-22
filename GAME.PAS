@@ -335,11 +335,20 @@ var
   w: integer;
   s: string;
   colour: byte;
+  shiftX: integer;
   now: double;
 begin
   now := GetTimer;
 
-  Cls($4F);
+  Cls($67);
+
+  shiftX := trunc(frac(now) * 10);
+
+  for a:=-(VGAHeight div 10) to VGAWidth div 10 do
+    line(
+      a * 10 + shiftX, 0,
+      a * 10 + shiftX + VGAHeight, VGAHeight,
+      $0F);
 
   for a:=0 to high(foodList) do begin
     if not foodList[a].active then continue;

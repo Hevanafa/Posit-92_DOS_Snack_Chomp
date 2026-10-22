@@ -81,6 +81,30 @@ begin
   actualGameState := GameStateTitle;
 end;
 
+procedure ResetGameplayState;
+begin
+  gameTime := 0.0;
+  score := 0;
+  lives := MaxLives;
+  invincibleEndTick := 0.0;
+
+  fillchar(foodList, sizeof(foodList), 0);
+  fillchar(floatingTexts, sizeof(floatingTexts), 0);
+
+  isBlinkingVisible := true;
+  isMouthOpen := false;
+
+  nextSpawnTick := 2.0;
+end;
+
+procedure InitPlayingState;
+begin
+  actualGameState := GameStatePlaying;
+
+  countdownNumber := 3;
+  countdownNextTick := GetTimer + 1.0;
+end;
+
 procedure SpawnFood(const foodType: TFoodType; const x: double);
 var
   a, idx: integer;
@@ -176,19 +200,9 @@ end;
 procedure OnReady; far;
 begin
   actualGameState := GameStateTitle;
-  gameTime := 0.0;
-  score := 0;
 
-  lives := MaxLives;
-  invincibleEndTick := 0.0;
-
-  fillchar(foodList, sizeof(foodList), 0);
-  fillchar(floatingTexts, sizeof(floatingTexts), 0);
-
-  isBlinkingVisible := true;
-  isMouthOpen := true;
-
-  nextSpawnTick := 2.0;
+  InitTitleState;
+  ResetGameplayState;
 end;
 
 { Handle game state updates here }

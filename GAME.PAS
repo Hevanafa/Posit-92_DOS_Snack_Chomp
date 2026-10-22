@@ -20,7 +20,10 @@ const
   { in seconds }
   InvincibleDuration = 3.0;
   FoodSpawnRate = 1.25;
+  FoodDropSpeed = 120;
   ConveyorSpeed = 80;
+  PipeX = DefaultVGAWidth - 48;
+  PipeY = 0;
 
   JudgementX = 64;
   MaxLives = 4;
@@ -202,6 +205,8 @@ begin
 
   LoadTex(texHeartEmpty, 'IMG\HRTEMPTY.BMP');
   LoadTex(texHeartFill, 'IMG\HRTFILL.BMP');
+
+  LoadTex(texPipe, 'IMG\PIPE.BMP');
 
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
 end;

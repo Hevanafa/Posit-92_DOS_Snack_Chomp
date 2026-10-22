@@ -191,6 +191,66 @@ end;
 
 { Engine region }
 
+procedure UnsafeSpr(const tex: TTexture; const x, y: integer);
+const
+  TransparencyKey = 13;
+var
+  srcX, srcY: integer;
+  rowOffset, pxOffset: longint;
+
+  startY, endY: integer;
+  startX, endX: integer;
+
+  destOffset: word;
+  drawCount: word;
+
+  pixelData: pointer;
+  srcAdd: word;
+begin
+  pixelData := tex.data;
+
+  startX := 0;
+  endX := tex.width-1;
+  drawCount := endX - startX + 1;
+
+  { Begin loop }
+
+  for srcY := 0 to tex.height-1 do begin
+    destOffset := word(y + srcY) * VGAWidth + word(x + startX);
+    srcAdd := word(srcY) * tex.width + startX;
+
+    asm
+      push ds
+
+      les di, backBuffer
+      add di, destOffset
+
+      { Load DH with transparencyKey }
+      mov dh, TransparencyKey
+
+      { Load DS:SI with the source tex's data }
+      lds si, pixelData
+      add si, srcAdd
+      mov cx, drawCount
+      mov ah, dh
+
+    @loop:
+      lodsb
+      cmp al, ah
+      je @skip
+      mov es:[di], al
+
+    @skip:
+      inc di
+      dec cx
+      jnz @loop
+
+      pop ds
+    end;
+  end;
+end;
+
+
 { Load assets here }
 procedure OnPreload; far;
 begin
@@ -360,7 +420,7 @@ begin
       ConveyorItemY)
   end;
 
-  spr(texPipe, PipeX, PipeY);
+  UnsafeSpr(texPipe, PipeX, PipeY);
 
   if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
     if isMouthOpen then

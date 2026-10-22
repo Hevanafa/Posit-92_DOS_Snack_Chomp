@@ -19,9 +19,13 @@ const
 
   { in seconds }
   InvincibleDuration = 3.0;
+  { 1 / spawn rate }
   FoodSpawnRate = 1.25;
   FoodDropSpeed = 120;
   ConveyorSpeed = 80;
+
+  CharHeadX = 32;
+  CharHeadY = 76;
   PipeX = DefaultVGAWidth - 48;
   PipeY = 0;
 
@@ -432,9 +436,9 @@ begin
 
   if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
     if isMouthOpen then
-      spr(texKaylaOpen, 32, 68)
+      spr(texKaylaOpen, CharHeadX, CharHeadY)
     else
-      spr(texKaylaNormal, 32, 68);
+      spr(texKaylaNormal, CharHeadX, CharHeadY);
   end;
 
 {$ifndef release}

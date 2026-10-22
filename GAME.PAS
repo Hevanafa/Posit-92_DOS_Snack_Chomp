@@ -201,24 +201,22 @@ var
   startY, endY: integer;
   startX, endX: integer;
 
-  destOffset: word;
-  drawCount: word;
-
   pixelData: pointer;
-  srcAdd: word;
+  srcOffset, destOffset: word;
+  drawCount: word;
 begin
   pixelData := tex.data;
 
   startX := 0;
-  endX := tex.width-1;
+  endX := tex.width - 1;
+
+  srcOffset := startX;
+  destOffset := word(y) * VGAWidth + word(x + startX);
   drawCount := endX - startX + 1;
 
-  { Begin loop }
+  { Render logic }
 
   for srcY := 0 to tex.height-1 do begin
-    destOffset := word(y + srcY) * VGAWidth + word(x + startX);
-    srcAdd := word(srcY) * tex.width + startX;
-
     asm
       push ds
 
@@ -230,7 +228,7 @@ begin
 
       { Load DS:SI with the source tex's data }
       lds si, pixelData
-      add si, srcAdd
+      add si, srcOffset
       mov cx, drawCount
       mov ah, dh
 
@@ -247,6 +245,9 @@ begin
 
       pop ds
     end;
+
+    inc(srcOffset, tex.width);
+    inc(destOffset, VGAWidth)
   end;
 end;
 

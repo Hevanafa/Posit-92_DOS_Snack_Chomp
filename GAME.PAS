@@ -55,6 +55,11 @@ type
 var
   { Game state variables }
   actualGameState: TGameState;
+
+  countdownNumber: integer;
+  { uses real time }
+  countdownNextTick: double;
+
   gameTime: double;
   score: longint;
 
@@ -70,6 +75,11 @@ var
 
   floatingTexts: array[0..9] of TFloatingText;
 
+
+procedure InitTitleState;
+begin
+  actualGameState := GameStateTitle;
+end;
 
 procedure SpawnFood(const foodType: TFoodType; const x: double);
 var

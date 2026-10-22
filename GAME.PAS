@@ -341,9 +341,6 @@ begin
 
   Cls($4F);
 
-  { spr(texLemon, 10, 10);
-  spr(texCookie, 40, 10); }
-
   for a:=0 to high(foodList) do begin
     if not foodList[a].active then continue;
 
@@ -353,6 +350,8 @@ begin
       trunc(foodList[a].x - foodList[a].texture^.width / 2),
       ConveyorItemY)
   end;
+
+  spr(texPipe, PipeX, PipeY);
 
   if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
     if isMouthOpen then

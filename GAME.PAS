@@ -47,6 +47,7 @@ type
     x: double;
     texture: PTexture;
     isHarming: boolean;
+    isFalling: boolean;
   end;
 
   TFloatingText = record
@@ -140,6 +141,7 @@ begin
 
   foodList[idx].foodType := foodType;
   foodList[idx].x := x;
+  foodList[idx].isFalling := true;
 
   case foodType of
     FoodCookie:

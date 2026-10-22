@@ -63,6 +63,7 @@ var
   { Only applies in the playing state }
   gameTime: double;
   score: longint;
+  { fullness: double; }
 
   isMouthOpen: boolean;
   lives: integer;
@@ -219,7 +220,14 @@ begin
   if IsKeyDown(SC_LEFT_SHIFT) and IsKeyDown(SC_Q) then SignalDone;
 {$endif}
 
+  if actualGameState = GameStateTitle then begin
+    if IsKeyDown(SC_SPACE) then
+      InitPlayingState;
+  end;
+
+
   if actualGameState = GameStatePlaying then begin
+    { Handle inputs }
 
     isMouthOpen := not IsKeyDown(SC_SPACE);
     isBlinkingVisible := not isBlinkingVisible;
@@ -287,6 +295,8 @@ end;
 procedure Draw; far;
 var
   a: integer;
+  w: integer;
+  s: string;
 begin
   Cls($4F);
 
@@ -314,9 +324,16 @@ begin
   { VLine(JudgementX, 68, 132, $0F); }
 {$endif}
 
-  if actualGameState = GameStatePlaying then begin
-    { HUD stuff }
+  { HUD & overlay stuff }
 
+  if actualGameState = GameStateTitle then begin
+    s := 'Press Spacebar to start';
+    w := MeasureDefault(s);
+
+    PrintDefault(s, (VGAWidth - w) shr 1, 100);
+  end;
+
+  if actualGameState = GameStatePlaying then begin
     for a:=0 to high(floatingTexts) do begin
       if not floatingTexts[a].active then continue;
 

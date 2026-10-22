@@ -57,6 +57,11 @@ type
     vel: TVector;
   end;
 
+const
+  SafeFoodList: array[0..1] of TFoodType = (
+    FoodCookie,
+    FoodLemon
+  );
 
 var
   { Game state variables }
@@ -286,10 +291,10 @@ begin
       case pick of
         1: SpawnFood(FoodBomb, VGAWidth + 10);
         else
-          if random >= 0.5 then
-            SpawnFood(FoodCookie, VGAWidth + 10)
-          else
-            SpawnFood(FoodLemon, VGAWidth + 10);
+          SpawnFood(
+            SafeFoodList[
+              random(high(SafeFoodList) + 1)],
+              VGAWidth + 10);
       end;
     end;
 

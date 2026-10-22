@@ -91,6 +91,8 @@ end;
 
 procedure ResetGameplayState;
 begin
+  RandSeed := trunc(GetTimer);
+
   gameTime := 0.0;
   score := 0;
   lives := MaxLives;
@@ -277,7 +279,7 @@ begin
     end;
 
     if gameTime >= nextSpawnTick then begin
-      nextSpawnTick := gameTime + 0.5;
+      nextSpawnTick := gameTime + 1 / FoodSpawnRate;
 
       SpawnFood(
         TFoodType(random(ord(high(TFoodType)) + 1)),

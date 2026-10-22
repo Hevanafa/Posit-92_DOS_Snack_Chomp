@@ -15,6 +15,7 @@ uses
   ASSETS;
 
 const
+  TwoPi = 2 * Pi;
   FoodSpeed = 120;
   JudgementX = 64;
   MaxLives = 4;
@@ -306,7 +307,11 @@ var
   a: integer;
   w: integer;
   s: string;
+  colour: byte;
+  now: double;
 begin
+  now := GetTimer;
+
   Cls($4F);
 
   { spr(texLemon, 10, 10);
@@ -339,7 +344,14 @@ begin
     s := 'Press Spacebar to start';
     w := MeasureDefault(s);
 
-    PrintDefault(s, (VGAWidth - w) shr 1, 100);
+    colour := 16 + round(8 + sin(frac(now / 4.0) * TwoPi) * 7);
+
+    PrintBMFontTint(
+      fontP92SansBold,
+      s,
+      (VGAWidth - w) shr 1,
+      100,
+      colour);
   end;
 
   if actualGameState = GameStatePlaying then begin

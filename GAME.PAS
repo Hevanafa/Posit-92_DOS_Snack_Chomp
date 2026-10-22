@@ -60,6 +60,7 @@ var
   { uses real time }
   countdownNextTick: double;
 
+  { Only applies in the playing state }
   gameTime: double;
   score: longint;
 
@@ -218,65 +219,68 @@ begin
   if IsKeyDown(SC_LEFT_SHIFT) and IsKeyDown(SC_Q) then SignalDone;
 {$endif}
 
-  isMouthOpen := not IsKeyDown(SC_SPACE);
-  isBlinkingVisible := not isBlinkingVisible;
+  if actualGameState = GameStatePlaying then begin
 
-  { Handle gameplay state }
+    isMouthOpen := not IsKeyDown(SC_SPACE);
+    isBlinkingVisible := not isBlinkingVisible;
 
-  for a:=0 to high(foodList) do begin
-    if not foodList[a].active then continue;
+    { Handle gameplay state }
 
-    foodList[a].x := foodList[a].x - FoodSpeed * DeltaTime;
+    for a:=0 to high(foodList) do begin
+      if not foodList[a].active then continue;
 
-    if foodList[a].x < JudgementX then begin
-      { case foodList[a].foodType of
-      end; }
+      foodList[a].x := foodList[a].x - FoodSpeed * DeltaTime;
 
-      if foodList[a].isHarming then begin
-        { Eat harming food }
+      if foodList[a].x < JudgementX then begin
+        { case foodList[a].foodType of
+        end; }
 
-        if isMouthOpen and (not IsInvincible) then begin
-          invincibleEndTick := gameTime + 3.0;
-          dec(lives)
+        if foodList[a].isHarming then begin
+          { Eat harming food }
+
+          if isMouthOpen and (not IsInvincible) then begin
+            invincibleEndTick := gameTime + 3.0;
+            dec(lives)
+          end;
+
+          foodList[a].active := false;
+          continue
+        end;
+
+        if isMouthOpen then begin
+          { Eat food }
+          inc(score, 100);
+          SpawnFloatingText('+100', JudgementX, 100);
         end;
 
         foodList[a].active := false;
+
+        continue
+      end;
+    end;
+
+    if gameTime >= nextSpawnTick then begin
+      nextSpawnTick := gameTime + 0.5;
+
+      SpawnFood(
+        TFoodType(random(ord(high(TFoodType)) + 1)),
+        VGAWidth + 10);
+    end;
+
+    for a:=0 to high(floatingTexts) do begin
+      if not floatingTexts[a].active then continue;
+
+      if gameTime >= floatingTexts[a].endTick then begin
+        floatingTexts[a].active := false;
         continue
       end;
 
-      if isMouthOpen then begin
-        { Eat food }
-        inc(score, 100);
-        SpawnFloatingText('+100', JudgementX, 100);
-      end;
-
-      foodList[a].active := false;
-
-      continue
-    end;
-  end;
-
-  if gameTime >= nextSpawnTick then begin
-    nextSpawnTick := gameTime + 0.5;
-
-    SpawnFood(
-      TFoodType(random(ord(high(TFoodType)) + 1)),
-      VGAWidth + 10);
-  end;
-
-  for a:=0 to high(floatingTexts) do begin
-    if not floatingTexts[a].active then continue;
-
-    if gameTime >= floatingTexts[a].endTick then begin
-      floatingTexts[a].active := false;
-      continue
+      floatingTexts[a].pos.y := floatingTexts[a].pos.y + floatingTexts[a].vel.y * DeltaTime;
+      floatingTexts[a].pos.x := floatingTexts[a].pos.x + floatingTexts[a].vel.x * DeltaTime;
     end;
 
-    floatingTexts[a].pos.y := floatingTexts[a].pos.y + floatingTexts[a].vel.y * DeltaTime;
-    floatingTexts[a].pos.x := floatingTexts[a].pos.x + floatingTexts[a].vel.x * DeltaTime;
+    gameTime := gameTime + DeltaTime
   end;
-
-  gameTime := gameTime + DeltaTime
 end;
 
 { Render logic }
@@ -307,26 +311,28 @@ begin
   end;
 
 {$ifndef release}
-  VLine(JudgementX, 68, 132, $0F);
+  { VLine(JudgementX, 68, 132, $0F); }
 {$endif}
 
-  { HUD stuff }
+  if actualGameState = GameStatePlaying then begin
+    { HUD stuff }
 
-  for a:=0 to high(floatingTexts) do begin
-    if not floatingTexts[a].active then continue;
+    for a:=0 to high(floatingTexts) do begin
+      if not floatingTexts[a].active then continue;
 
-    with floatingTexts[a] do
-      PrintDefault(text, trunc(pos.x), trunc(pos.y));
+      with floatingTexts[a] do
+        PrintDefault(text, trunc(pos.x), trunc(pos.y));
+    end;
+
+    for a:=0 to MaxLives - 1 do
+      spr(texHeartEmpty, 160 + a * 20, 8);
+
+    if lives > 0 then
+      for a:=0 to lives - 1 do
+        spr(texHeartFill, 160 + a * 20, 8);
+
+    PrintDefault(i32str(score), 8, 8);
   end;
-
-  for a:=0 to MaxLives - 1 do
-    spr(texHeartEmpty, 160 + a * 20, 8);
-
-  if lives > 0 then
-    for a:=0 to lives - 1 do
-      spr(texHeartFill, 160 + a * 20, 8);
-
-  PrintDefault(i32str(score), 8, 8);
 end;
 
 

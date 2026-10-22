@@ -16,7 +16,12 @@ uses
 
 const
   TwoPi = 2 * Pi;
-  FoodSpeed = 120;
+
+  { in seconds }
+  InvincibleDuration = 3.0;
+  FoodSpawnRate = 1.25;
+  FoodSpeed = 80;
+
   JudgementX = 64;
   MaxLives = 4;
 
@@ -251,7 +256,7 @@ begin
           { Eat harming food }
 
           if isMouthOpen and (not IsInvincible) then begin
-            invincibleEndTick := gameTime + 3.0;
+            invincibleEndTick := gameTime + InvincibleDuration;
             dec(lives)
           end;
 

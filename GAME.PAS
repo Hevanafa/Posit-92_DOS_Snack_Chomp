@@ -20,7 +20,7 @@ const
   { in seconds }
   InvincibleDuration = 3.0;
   FoodSpawnRate = 1.25;
-  FoodSpeed = 80;
+  ConveyorSpeed = 80;
 
   JudgementX = 64;
   MaxLives = 4;
@@ -255,7 +255,7 @@ begin
     for a:=0 to high(foodList) do begin
       if not foodList[a].active then continue;
 
-      foodList[a].x := foodList[a].x - FoodSpeed * DeltaTime;
+      foodList[a].x := foodList[a].x - ConveyorSpeed * DeltaTime;
 
       if foodList[a].x < JudgementX then begin
         { case foodList[a].foodType of

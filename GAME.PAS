@@ -219,7 +219,7 @@ end;
 procedure Update; far;
 var
   now: double;
-  a: integer;
+  a, pick: integer;
 begin
   now := GetTimer;
 
@@ -281,9 +281,16 @@ begin
     if gameTime >= nextSpawnTick then begin
       nextSpawnTick := gameTime + 1 / FoodSpawnRate;
 
-      SpawnFood(
-        TFoodType(random(ord(high(TFoodType)) + 1)),
-        VGAWidth + 10);
+      pick := random(4);
+
+      case pick of
+        1: SpawnFood(FoodBomb, VGAWidth + 10);
+        else
+          if random >= 0.5 then
+            SpawnFood(FoodCookie, VGAWidth + 10)
+          else
+            SpawnFood(FoodLemon, VGAWidth + 10);
+      end;
     end;
 
     for a:=0 to high(floatingTexts) do begin

@@ -48,7 +48,7 @@ type
   TFood = record
     active: boolean;
     foodType: TFoodType;
-    x: double;
+    pos: TPoint;
     texture: PTexture;
     isHarming: boolean;
     isFalling: boolean;
@@ -125,7 +125,7 @@ begin
   countdownNextTick := GetTimer + 1.0;
 end;
 
-procedure SpawnFood(const foodType: TFoodType; const x: double);
+procedure SpawnFood(const foodType: TFoodType; const x, y: double);
 var
   a, idx: integer;
 begin
@@ -144,7 +144,9 @@ begin
   foodList[idx].active := true;
 
   foodList[idx].foodType := foodType;
-  foodList[idx].x := x;
+  foodList[idx].pos.x := x;
+  foodList[idx].pos.y := y;
+
   foodList[idx].isFalling := true;
 
   case foodType of
@@ -319,33 +321,44 @@ begin
     for a:=0 to high(foodList) do begin
       if not foodList[a].active then continue;
 
-      foodList[a].x := foodList[a].x - ConveyorSpeed * DeltaTime;
+      if foodList[a].isFalling then begin
+        foodList[a].pos.y := foodList[a].pos.y + FoodDropSpeed * DeltaTime;
 
-      if foodList[a].x < JudgementX then begin
-        { case foodList[a].foodType of
-        end; }
+        if foodList[a].pos.y >= ConveyorItemY then begin
+          foodList[a].pos.y := ConveyorItemY;
+          foodList[a].isFalling := false;
+        end;
+      end;
 
-        if foodList[a].isHarming then begin
-          { Eat harming food }
+      if not foodList[a].isFalling then begin
+        foodList[a].pos.x := foodList[a].pos.x - ConveyorSpeed * DeltaTime;
 
-          if isMouthOpen and (not IsInvincible) then begin
-            invincibleEndTick := gameTime + InvincibleDuration;
-            dec(lives)
+        if foodList[a].x < JudgementX then begin
+          { case foodList[a].foodType of
+          end; }
+
+          if foodList[a].isHarming then begin
+            { Eat harming food }
+
+            if isMouthOpen and (not IsInvincible) then begin
+              invincibleEndTick := gameTime + InvincibleDuration;
+              dec(lives)
+            end;
+
+            foodList[a].active := false;
+            continue
+          end;
+
+          if isMouthOpen then begin
+            { Eat food }
+            inc(score, 100);
+            SpawnFloatingText('+100', JudgementX, 100);
           end;
 
           foodList[a].active := false;
+
           continue
         end;
-
-        if isMouthOpen then begin
-          { Eat food }
-          inc(score, 100);
-          SpawnFloatingText('+100', JudgementX, 100);
-        end;
-
-        foodList[a].active := false;
-
-        continue
       end;
     end;
 

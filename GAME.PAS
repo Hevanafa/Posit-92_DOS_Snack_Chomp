@@ -302,9 +302,6 @@ procedure OnReady; far;
 begin
   actualGameState := GameStateTitle;
 
-  { CloneTex(texLemon, texLemonClone); }
-
-  { For some reason this causes Update method is not set }
   CloneBMFont(fontP92SansBold, fontP92SansBoldBlack);
   ReplaceColour(fontP92SansBoldBlack.texture, 15, 0);
 
@@ -506,7 +503,7 @@ begin
     PrintScoreDozer(i32str(score), 8, 8);
   end;
 
-  print('MemAvail: ' + i32str(longint(MemAvail)), 0, 20, 0);
+  { print('MemAvail: ' + i32str(longint(MemAvail)), 0, 20, 0); }
 end;
 
 

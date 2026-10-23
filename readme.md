@@ -3,6 +3,19 @@
 - `dos` contains the DOSBox config used by js-dos v7
 - `web` contains the entry point or "site" (`game.zip` is added to .gitignore)
 
+## game.zip structure
+
+This ZIP file (`game.zip`) is required by the entry point `web/index.html`
+
+There are 2 important items inside the ZIP:
+
+- `.jsdos/`
+- `(game files)`
+
+`.jsdos` is exactly the copy from the `dos` directory
+
+`(game files)` are obviously your game EXE and all of your game assets
+
 ## js-dos v7 guide
 
 Obtained from this command line:

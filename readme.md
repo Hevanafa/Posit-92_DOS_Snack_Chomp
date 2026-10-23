@@ -1,3 +1,8 @@
+## Directories for release
+
+- `dos` contains the DOSBox config used by js-dos v7
+- `web` contains the entry point or "site" (`game.zip` is added to .gitignore)
+
 ## js-dos v7 guide
 
 Obtained from this command line:

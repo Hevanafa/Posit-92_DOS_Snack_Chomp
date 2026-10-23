@@ -198,9 +198,13 @@ end;
 
 procedure CloneTex(const src: TTexture; var dest: TTexture);
 begin
-  dest := src;
-  { dest.data := nil; }
-  move(src.data, dest.data, src.width * src.height)
+  if not assigned(src.data) then exit;
+
+  dest.width := src.width;
+  dest.height := src.height;
+
+  getmem(dest.data, src.width * src.height);
+  move(src.data^, dest.data^, src.width * src.height)
 end;
 
 procedure FreeTex(var tex: TTexture);

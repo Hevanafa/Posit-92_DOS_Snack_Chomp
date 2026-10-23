@@ -15,4 +15,5 @@ LOG.TXT
 
 # Releases
 DIST/
+builds/
 web/game.zip

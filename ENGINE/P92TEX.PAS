@@ -200,9 +200,7 @@ procedure CloneTex(const src: TTexture; var dest: TTexture);
 begin
   if not assigned(src.data) then exit;
 
-  dest.width := src.width;
-  dest.height := src.height;
-
+  dest := src;
   getmem(dest.data, src.width * src.height);
   move(src.data^, dest.data^, src.width * src.height)
 end;

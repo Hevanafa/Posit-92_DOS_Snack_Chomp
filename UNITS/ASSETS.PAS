@@ -7,7 +7,8 @@ interface
 uses P92BMFON, P92TEX;
 
 var
-  fontP92SansBold, fontX14y20pxScoreDozer: TBMFont;
+  fontP92SansBold, fontP92SansBoldBlack,
+  fontX14y20pxScoreDozer: TBMFont;
 
   texSpecimenP92: array[0..1] of TTexture;
 
@@ -20,6 +21,7 @@ var
 
 procedure PrintDefault(const text: string; const x, y: integer);
 function MeasureDefault(const text: string): integer;
+procedure PrintBlack(const text: string; const x, y: integer);
 procedure PrintScoreDozer(const text: string; const x, y: integer);
 
 
@@ -35,10 +37,16 @@ begin
   MeasureDefault := MeasureBMFont(fontP92SansBold, text)
 end;
 
+procedure PrintBlack(const text: string; const x, y: integer);
+begin
+  PrintBMFont(fontP92SansBoldBlack, text, x, y);
+end;
+
 procedure PrintScoreDozer(const text: string; const x, y: integer);
 begin
   PrintBMFont(fontX14y20pxScoreDozer, text, x, y)
 end;
+
 
 end.
 

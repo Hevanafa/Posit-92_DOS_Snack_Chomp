@@ -10,7 +10,7 @@ program Game;
 uses
   CRT, DOS,
   P92CORE, P92CONV, P92GEOM, P92KBD, P92MOUSE,
-  P92BMFON, P92GRAPH, P92TEX,
+  P92BMFON, P92GRAPH, P92TEX, P92TEXFX,
   P92PANIC, P92TIME, P92VGA,
   ASSETS;
 
@@ -99,6 +99,17 @@ var
 
   floatingTexts: array[0..9] of TFloatingText;
 
+
+procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
+var
+  a: word;
+begin
+  if not assigned(tex.data) then exit;
+
+  for a:=0 to tex.width * tex.height - 1 do
+    if tex.data^[a] = oldColour then
+      tex.data^[a] := newColour;
+end;
 
 procedure InitTitleState;
 begin
@@ -290,6 +301,9 @@ end;
 procedure OnReady; far;
 begin
   actualGameState := GameStateTitle;
+
+  CloneBMFont(fontP92SansBold, fontP92SansBoldBlack);
+  ReplaceColour(fontP92SansBoldBlack.texture, 15, 0);
 
   InitTitleState;
   ResetGameplayState;

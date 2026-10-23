@@ -99,7 +99,6 @@ var
 
   floatingTexts: array[0..9] of TFloatingText;
 
-
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
 var
   a: word;
@@ -287,6 +286,7 @@ begin
   LoadTex(texPipe, 'IMG\PIPE.BMP');
 
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
+  { LoadBMFont(fontP92SansBoldBlack, 'FONTS\P92SAN8B.TXT'); }
   LoadBMFont(fontX14y20pxScoreDozer, 'FONTS\SCOREDOZ.TXT');
 end;
 
@@ -302,6 +302,9 @@ procedure OnReady; far;
 begin
   actualGameState := GameStateTitle;
 
+  { CloneTex(texLemon, texLemonClone); }
+
+  { For some reason this causes Update method is not set }
   CloneBMFont(fontP92SansBold, fontP92SansBoldBlack);
   ReplaceColour(fontP92SansBoldBlack.texture, 15, 0);
 
@@ -483,7 +486,7 @@ begin
       s := I32Str(countdownNumber);
       w := MeasureDefault(s);
 
-      PrintDefault(s, (VGAWidth - w) shr 1, 100);
+      PrintBlack(s, (VGAWidth - w) shr 1, 100);
     end;
 
     for a:=0 to high(floatingTexts) do begin
@@ -502,6 +505,8 @@ begin
 
     PrintScoreDozer(i32str(score), 8, 8);
   end;
+
+  print('MemAvail: ' + i32str(longint(MemAvail)), 0, 20, 0);
 end;
 
 

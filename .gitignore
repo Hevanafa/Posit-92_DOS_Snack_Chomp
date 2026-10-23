@@ -10,3 +10,7 @@ TP/
 
 # Auto-generated stuff
 LOG.TXT
+
+# Releases
+DIST/
+web/game.zip

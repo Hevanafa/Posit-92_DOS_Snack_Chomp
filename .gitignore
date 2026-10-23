@@ -1,3 +1,5 @@
+temp/
+
 # Lazarus stuff
 lib/
 *.lps

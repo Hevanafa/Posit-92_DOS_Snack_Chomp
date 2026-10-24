@@ -610,10 +610,9 @@ begin
       if perc < 1.0 then
         headOffsetY := trunc(LerpEased(0, -10, perc, EaseOutQuad))
       else if perc < 2.0 then
-        headOffsetY := trunc(LerpEased(-10, 0, perc - 1.0, EaseOutQuad))
-      else
-        headOffsetY := 0;
-    end;
+        headOffsetY := trunc(LerpEased(-10, 0, perc - 1.0, EaseInQuad));
+    end else
+      headOffsetY := 0;
 
     if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
       if isMouthOpen then

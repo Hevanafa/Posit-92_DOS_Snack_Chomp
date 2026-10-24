@@ -42,6 +42,7 @@ const
 {$else}
   MaxFullness = 0.1;
 {$endif}
+  TransitionDuration = 1.2;
 
 type
   TGameState = (
@@ -536,7 +537,7 @@ begin
 
 
   if actualGameState = GameStateWin then begin
-    wipeY := trunc(transitionTime / 3.0 * VGAHeight);
+    wipeY := trunc(transitionTime / TransitionDuration * VGAHeight);
     RectFill(0, 0, VGAWidth, wipeY, WipeColour);
     spr(texGooWipe, 0, wipeY)
   end;

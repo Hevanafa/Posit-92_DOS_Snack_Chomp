@@ -41,8 +41,8 @@ const
 {$ifdef release}
   MaxFullness = 1.0;
 {$else}
-  {MaxFullness = 1.0; }
-  MaxFullness = 0.1;
+  MaxFullness = 1.0;
+  { MaxFullness = 0.1; }
 {$endif}
   TransitionDuration = 2.0;
 
@@ -126,7 +126,12 @@ var
   charHeadStartTick: double;
   charHeadFrameIdx: integer;
 
+  { used in ending }
   speechCol: integer;
+
+  headOffsetX, headOffsetY: integer;
+  goodFoodTimer: double;
+
 
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
 var

@@ -44,7 +44,9 @@ const
   MaxFullness = 1.0;
   { MaxFullness = 0.1; }
 {$endif}
-  TransitionDuration = 2.0;
+
+  WinTransitionDuration = 2.0;
+  LostHeartDuration = 0.5;
 
 type
   TGameState = (
@@ -531,6 +533,10 @@ begin
     UpdateSprAnim(animKaylaOpen, gameTime, charHeadStartTick, charHeadFrameIdx);
     UpdateSprAnim(animBomb, gameTime, animBombStartTick, animBombFrameIdx);
 
+    if isLostHeartVisible then
+      if gameTime >= lostHeartStartTick + LostHeartDuration then
+        isLostHeartVisible := false;
+
     if countdownNumber > 0 then begin
       if now >= countdownNextTick then begin
         countdownNextTick := now + 1.0;
@@ -550,7 +556,7 @@ begin
     if winPhase in [WinPhaseWipeIn, WinPhaseKaylaEnter] then begin
       winPhaseTimer := winPhaseTimer + DeltaTime;
 
-      if winPhaseTimer >= TransitionDuration then begin
+      if winPhaseTimer >= WinTransitionDuration then begin
         inc(winPhase);
         winPhaseTimer := 0.0;
       end;
@@ -725,7 +731,7 @@ begin
   if actualGameState = GameStateWin then begin
     case winPhase of
       WinPhaseWipeIn: begin
-        perc := winPhaseTimer / TransitionDuration;
+        perc := winPhaseTimer / WinTransitionDuration;
         wipeY := trunc(LerpEased(0, VGAHeight, perc, EaseOutQuad));
         RectFill(0, 0, VGAWidth, wipeY, WipeColour);
         spr(texGooWipe, 0, wipeY)
@@ -734,7 +740,7 @@ begin
       WinPhaseKaylaEnter: begin
         cls(160);
 
-        perc := winPhaseTimer / TransitionDuration;
+        perc := winPhaseTimer / WinTransitionDuration;
         portraitY := trunc(LerpEased(VGAHeight, 0, perc, EaseOutQuad));
 
         spr(

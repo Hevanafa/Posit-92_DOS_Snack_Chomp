@@ -11,7 +11,7 @@ uses
   CRT, DOS,
   P92CORE, P92CONV, P92GEOM, P92KBD, P92MOUSE,
   P92BMFON, P92GRAPH, P92TEX, P92TEXFX,
-  P92PANIC, P92TIME, P92VGA,
+  P92PANIC, P92TIME, P92VGA, P92EASE,
   ASSETS;
 
 const
@@ -43,7 +43,7 @@ const
 {$else}
   MaxFullness = 0.1;
 {$endif}
-  TransitionDuration = 1.2;
+  TransitionDuration = 2.0;
 
 type
   TGameState = (
@@ -452,9 +452,11 @@ var
   w: integer;
   s: string;
   colour: byte;
-  shiftX, renderX: integer;
-  wipeY: integer;
   now: double;
+
+  shiftX, renderX: integer;
+  perc: double;
+  wipeY: integer;
 begin
   now := GetTimer;
 
@@ -538,7 +540,8 @@ begin
 
 
   if actualGameState = GameStateWin then begin
-    wipeY := trunc(transitionTime / TransitionDuration * VGAHeight);
+    perc := transitionTime / TransitionDuration;
+    wipeY := trunc(LerpEased(0, VGAHeight, perc, EaseOutQuad));
     RectFill(0, 0, VGAWidth, wipeY, WipeColour);
     spr(texGooWipe, 0, wipeY)
   end;

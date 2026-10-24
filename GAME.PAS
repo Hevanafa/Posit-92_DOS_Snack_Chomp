@@ -317,14 +317,24 @@ begin
   LoadTex(texGooWipe, 'IMG\WIPE.BMP');
 
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
-  { LoadBMFont(fontP92SansBoldBlack, 'FONTS\P92SAN8B.TXT'); }
   LoadBMFont(fontX14y20pxScoreDozer, 'FONTS\SCOREDOZ.TXT');
 
   InitMelody(sfxChomp, 3);
+
   with sfxChomp do begin
     InitNote(notes^[0], 330, 0.05);
     InitNote(notes^[1], 250, 0.05);
     InitNote(notes^[2], 200, 0.05);
+  end;
+
+  InitMelody(sfxExplosion, 5);
+
+  with sfxExplosion do begin
+    InitNote(notes^[0], 160, 0.033);
+    InitNote(notes^[1], 113, 0.033);
+    InitNote(notes^[2], 137, 0.033);
+    InitNote(notes^[3], 82, 0.033);
+    InitNote(notes^[4], 61, 0.033);
   end;
 end;
 
@@ -398,6 +408,7 @@ begin
 
             if isMouthOpen and (not IsInvincible) then begin
               invincibleEndTick := gameTime + InvincibleDuration;
+              PlayMelody(sfxExplosion);
               dec(lives)
             end;
 

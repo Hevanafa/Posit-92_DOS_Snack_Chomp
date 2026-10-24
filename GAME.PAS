@@ -138,6 +138,9 @@ var
   { uses game time }
   badFoodStartTick: double;
 
+  animBombStartTick: double;
+  animBombFrameIdx: integer;
+
 
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
 var
@@ -399,6 +402,7 @@ begin
   ReplaceColour(fontP92SansBoldBlack.texture, 15, 0);
 
   InitSprAnim(animKaylaOpen, texSheetKaylaOpen, 6, 64, 64, 1 / 3.0);
+  InitSprAnim(animBomb, texSheetBomb, 2, 36, 30, 0.25);
 
   InitTitleState;
   ResetGameplayState;
@@ -515,6 +519,7 @@ begin
     end;
 
     UpdateSprAnim(animKaylaOpen, gameTime, charHeadStartTick, charHeadFrameIdx);
+    UpdateSprAnim(animBomb, gameTime, animBombStartTick, animBombFrameIdx);
 
     if countdownNumber > 0 then begin
       if now >= countdownNextTick then begin

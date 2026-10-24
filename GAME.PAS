@@ -92,6 +92,8 @@ const
     FoodLemon
   );
 
+  SpeechLine = 'I''ll goop everyone into my gooey obedient drones mwhehehehe';
+
 var
   { Game state variables }
   actualGameState: TGameState;

@@ -35,6 +35,8 @@ const
   HeartBarX = 20;
   HeartBarY = 50;
 
+  WipeColour = 64;
+
 {$ifdef release}
   MaxFullness = 1.0;
 {$else}
@@ -535,6 +537,7 @@ begin
 
   if actualGameState = GameStateWin then begin
     wipeY := trunc(transitionTime / 3.0 * VGAHeight);
+    RectFill(0, 0, VGAWidth, wipeY, WipeColour);
     spr(texGooWipe, 0, wipeY)
   end;
 

@@ -528,11 +528,14 @@ end;
 { Render logic }
 procedure Draw; far;
 var
-  a, b, col: integer;
+  a, b, col, row: integer;
   w: integer;
   s: string;
   colour: byte;
   now: double;
+
+  start: integer;
+  rowOffset: word;
 
   shiftX, renderX: integer;
   perc: double;
@@ -548,14 +551,38 @@ begin
 
     shiftX := trunc(frac(now) * 10);
 
+    { Diagonal lines }
+
+    {
     for col:=-(VGAHeight div 10) to VGAWidth div 10 do
       for b:=0 to VGAHeight-1 do
         PSet(col * 10 + b + shiftX, b, $0F);
+    }
 
-        { line(
-          col * 10 + shiftX, 0,
-          col * 10 + shiftX + VGAHeight, VGAHeight,
-          $0F); }
+    {
+    for col:=-(VGAHeight div 10) to VGAWidth div 10 do
+      Line(
+        col * 10 + shiftX, 0,
+        col * 10 + shiftX + VGAHeight, VGAHeight,
+        $0F);
+    }
+
+    start := shiftX;
+    rowOffset := 0;
+
+    for row := 0 to VGAHeight - 1 do begin
+      col := start;
+
+      while col < VGAWidth do begin
+        backBuffer^[rowOffset + col] := $0F;
+        inc(col, 10);
+      end;
+
+      inc(rowOffset, VGAWidth);
+      inc(start);
+
+      if start = 0 then start := 0;
+    end;
 
     for a:=0 to high(foodList) do begin
       if not foodList[a].active then continue;

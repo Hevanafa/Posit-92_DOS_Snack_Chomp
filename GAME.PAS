@@ -613,7 +613,11 @@ begin
       { VLine(trunc(foodList[a].x), 68, 132, $0F); }
 
       renderX := trunc(foodList[a].pos.x - foodList[a].texture^.width / 2);
-      Spr(foodList[a].texture^, renderX, trunc(foodList[a].pos.y));
+
+      if foodList[a].foodType = FoodBomb then
+        DrawSprAnim(animBomb, renderX, trunc(foodList[a].pos.y), animBombFrameIdx)
+      else
+        Spr(foodList[a].texture^, renderX, trunc(foodList[a].pos.y));
     end;
 
     UnsafeSpr(texPipe, PipeX, PipeY);

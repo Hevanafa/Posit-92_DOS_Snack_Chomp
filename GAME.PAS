@@ -41,7 +41,8 @@ const
 {$ifdef release}
   MaxFullness = 1.0;
 {$else}
-  MaxFullness = 1.0;
+  {MaxFullness = 1.0; }
+  MaxFullness = 0.1;
 {$endif}
   TransitionDuration = 2.0;
 
@@ -640,9 +641,21 @@ begin
           portraitY);
       end;
 
-      WinPhaseKaylaSpeech: ;
+      WinPhaseKaylaSpeech,
+      WinPhaseDone: begin
+        cls(160);
 
-      WinPhaseDone: ;
+        spr(
+          texKaylaPortrait,
+          (VGAWidth - texKaylaPortrait.width) shr 1,
+          0);
+
+        if speechCol > 0 then begin
+          s := copy(SpeechLine, 1, speechCol);
+          w := MeasureDefault(s);
+          PrintDefault(s, (VGAWidth - w) shr 1, 150);
+        end;
+      end;
     end;
   end;
 

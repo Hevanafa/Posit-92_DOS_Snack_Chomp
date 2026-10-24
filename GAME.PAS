@@ -47,8 +47,10 @@ const
 
   WinTransitionDuration = 2.0;
   LostHeartDuration = 0.5;
-  { this is repeated until perc = 4.0 }
-  FoodBounceDuration = 0.1;
+
+  { this is repeated until perc = 2.0 }
+  FoodBounceDuration = 0.2;
+  FoodBounceTimes = 2;
 
 type
   TGameState = (
@@ -467,7 +469,7 @@ begin
       end;
 
       if foodList[a].isBouncing
-        and (gameTime >= foodList[a].bounceStartTick + FoodBounceDuration * 4) then
+        and (gameTime >= foodList[a].bounceStartTick + FoodBounceDuration * FoodBounceTimes) then
           foodList[a].isBouncing := false;
 
       if not foodList[a].isFalling then begin
@@ -649,10 +651,10 @@ begin
         elapsed := gameTime - foodList[a].bounceStartTick;
         perc := elapsed / FoodBounceDuration;
 
-        if perc < 2.0 then
-          renderY := trunc(renderY + sin(perc / 2.0 * pi) * 20)
-        else if perc < 4.0 then
-          renderY := trunc(renderY + sin((perc - 2.0) / 2.0 * pi) * 10)
+        if perc < 1.0 then
+          renderY := trunc(renderY - sin(perc * pi) * 20)
+        else if perc < 2.0 then
+          renderY := trunc(renderY - sin((perc - 1.0) * pi) * 10)
       end;
 
       if foodList[a].foodType = FoodBomb then

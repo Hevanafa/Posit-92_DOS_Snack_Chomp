@@ -120,6 +120,8 @@ var
   winPhase: TWinPhase;
   winPhaseTimer: double;
 
+  speechCol: integer;
+
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
 var
   a: word;
@@ -153,6 +155,8 @@ begin
   isMouthOpen := false;
 
   nextSpawnTick := 2.0;
+
+  speechCol := 0;
 end;
 
 procedure InitPlayingState;
@@ -492,11 +496,18 @@ begin
   end;
 
   if actualGameState = GameStateWin then begin
-    winPhaseTimer := winPhaseTimer + DeltaTime;
+    if winPhase in [WinPhaseWipeIn, WinPhaseKaylaEnter] then begin
+      winPhaseTimer := winPhaseTimer + DeltaTime;
 
-    if winPhaseTimer >= TransitionDuration then begin
-      inc(winPhase);
-      winPhaseTimer := 0.0;
+      if winPhaseTimer >= TransitionDuration then begin
+        inc(winPhase);
+        winPhaseTimer := 0.0;
+      end;
+    end;
+
+    if winphase = WinPhaseKaylaSpeech then begin
+      if speechCol < length(SpeechLine) then
+        inc(speechCol);
     end;
   end;
 end;

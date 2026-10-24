@@ -581,7 +581,7 @@ begin
       inc(rowOffset, VGAWidth);
       inc(start);
 
-      if start = 0 then start := 0;
+      if start = 10 then start := 0;
     end;
 
     for a:=0 to high(foodList) do begin

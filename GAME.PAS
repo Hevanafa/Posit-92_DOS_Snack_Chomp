@@ -555,12 +555,6 @@ begin
 
     {
     for col:=-(VGAHeight div 10) to VGAWidth div 10 do
-      for b:=0 to VGAHeight-1 do
-        PSet(col * 10 + b + shiftX, b, $0F);
-    }
-
-    {
-    for col:=-(VGAHeight div 10) to VGAWidth div 10 do
       Line(
         col * 10 + shiftX, 0,
         col * 10 + shiftX + VGAHeight, VGAHeight,

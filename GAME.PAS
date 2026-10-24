@@ -503,7 +503,10 @@ begin
             if isMouthOpen then begin
               { Eat food }
               { inc(score, 100); }
+
               fullness := fullness + 0.05;
+              fullnessPercStartTick := gameTime;
+
               SpawnFloatingText('+1', JudgementX, 100);
 
               goodFoodStartTick := gameTime;
@@ -755,9 +758,16 @@ begin
     end;
 
     { PrintScoreDozer(i32str(score), 8, 8); }
+    renderY := 32;
+
+    if gameTime < fullnessPercStartTick + FullnessPercDuration then begin
+      perc := (gameTime - fullnessPercStartTick) / FullnessPercDuration;
+      renderY := trunc(renderY - perc * 20);
+    end;
+
     s := i32str(round(fullness * 100)) + '%';
     w := MeasureScoreDozer(s);
-    PrintScoreDozer(s, (VGAWidth - w) shr 1, 32);
+    PrintScoreDozer(s, (VGAWidth - w) shr 1, renderY);
   end;
 
 

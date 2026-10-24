@@ -35,10 +35,17 @@ const
   HeartBarX = 20;
   HeartBarY = 50;
 
+{$ifdef release}
+  MaxFullness = 1.0;
+{$else}
+  MaxFullness = 0.1;
+{$endif}
+
 type
   TGameState = (
     GameStateTitle,
     GameStatePlaying,
+    GameStateWin,
     GameStateOver
   );
 
@@ -98,6 +105,7 @@ var
   nextSpawnTick: double;
 
   floatingTexts: array[0..9] of TFloatingText;
+  transitionTime: double;
 
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
 var
@@ -140,6 +148,12 @@ begin
 
   countdownNumber := 3;
   countdownNextTick := GetTimer + 1.0;
+end;
+
+procedure InitWinTransition;
+begin
+  actualGameState := GameStateWin;
+  transitionTime := 0.0;
 end;
 
 procedure SpawnFood(const foodType: TFoodType; const x, y: double);
@@ -373,6 +387,9 @@ begin
             { inc(score, 100); }
             fullness := fullness + 0.05;
             SpawnFloatingText('+1', JudgementX, 100);
+
+            if fullness >= MaxFullness then
+              InitWinTransition;
           end;
 
           foodList[a].active := false;

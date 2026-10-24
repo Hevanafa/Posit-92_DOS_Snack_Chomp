@@ -317,6 +317,7 @@ begin
   LoadTex(texKaylaNormal, 'IMG\KAY_NORM.BMP');
   LoadTex(texKaylaOpen, 'IMG\KAY_OPEN.BMP');
   LoadTex(texKaylaPortrait, 'IMG\KAY_FULL.BMP');
+  LoadTex(texSheetKaylaOpen, 'IMG\XKAYOPEN.BMP');
 
   LoadTex(texHeartEmpty, 'IMG\HRTEMPTY.BMP');
   LoadTex(texHeartFill, 'IMG\HRTFILL.BMP');

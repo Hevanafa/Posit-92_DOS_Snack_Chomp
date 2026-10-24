@@ -15,7 +15,8 @@ var
   texPipe, texGooWipe,
   texLemon, texCookie, texBomb,
   texKaylaNormal, texKaylaOpen, texKaylaPortrait,
-  texHeartFill, texHeartEmpty: TTexture;
+  texHeartFill, texHeartEmpty,
+  texSheetKaylaOpen: TTexture;
 
   sfxCountdown, sfxCountdownEnd,
   sfxChomp, sfxItemSpawn, sfxExplosion: TMelody;

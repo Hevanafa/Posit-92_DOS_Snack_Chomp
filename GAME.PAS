@@ -117,7 +117,7 @@ var
 
   floatingTexts: array[0..9] of TFloatingText;
 
-  winPhase: integer;
+  winPhase: TWinPhase;
   winPhaseTimer: double;
 
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
@@ -166,7 +166,7 @@ end;
 procedure InitWinTransition;
 begin
   actualGameState := GameStateWin;
-  winPhase := 0;
+  winPhase := low(TWinPhase);
   winPhaseTimer := 0.0;
 end;
 
@@ -472,7 +472,7 @@ var
 
   shiftX, renderX: integer;
   perc: double;
-  wipeY: integer;
+  wipeY, portraitY: integer;
 begin
   now := GetTimer;
 
@@ -556,10 +556,28 @@ begin
 
 
   if actualGameState = GameStateWin then begin
-    perc := winPhaseTimer / TransitionDuration;
-    wipeY := trunc(LerpEased(0, VGAHeight, perc, EaseOutQuad));
-    RectFill(0, 0, VGAWidth, wipeY, WipeColour);
-    spr(texGooWipe, 0, wipeY)
+    case winPhase of
+      WinPhaseWipeIn: begin
+        perc := winPhaseTimer / TransitionDuration;
+        wipeY := trunc(LerpEased(0, VGAHeight, perc, EaseOutQuad));
+        RectFill(0, 0, VGAWidth, wipeY, WipeColour);
+        spr(texGooWipe, 0, wipeY)
+      end;
+
+      WinPhaseKaylaEnter: begin
+        cls(160);
+
+        perc := winPhaseTimer / TransitionDuration;
+        portraitY := trunc(LerpEased(VGAHeight, 0, perc, EaseOutQuad));
+
+        spr(
+          texKaylaPortrait,
+          (VGAWidth - texKaylaPortrait.width) shr 1,
+          portraitY);
+      end;
+      WinPhaseKaylaSpeech: ;
+      WinPhaseDone: ;
+    end;
   end;
 
   { print('MemAvail: ' + i32str(longint(MemAvail)), 0, 20, 0); }

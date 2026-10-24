@@ -322,9 +322,9 @@ begin
   InitMelody(sfxChomp, 3);
 
   with sfxChomp do begin
-    InitNote(notes^[0], 330, 0.05);
-    InitNote(notes^[1], 250, 0.05);
-    InitNote(notes^[2], 200, 0.05);
+    InitNote(notes^[0], 783, 0.05);
+    InitNote(notes^[1], 659, 0.05);
+    InitNote(notes^[2], 523, 0.05);
   end;
 
   InitMelody(sfxExplosion, 5);

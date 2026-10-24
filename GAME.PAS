@@ -706,6 +706,11 @@ begin
       for a:=0 to lives - 1 do
         spr(texHeartFill, HeartBarX + a * 20, HeartBarY);
 
+    if isLostHeartVisible then begin
+      perc := gameTime - lostHeartStartTick;
+      spr(texHeartFill, HeartBarX + lostHeartIdx * 20, trunc(HeartBarY + perc * 20));
+    end;
+
     { PrintScoreDozer(i32str(score), 8, 8); }
     s := i32str(round(fullness * 100)) + '%';
     w := MeasureScoreDozer(s);

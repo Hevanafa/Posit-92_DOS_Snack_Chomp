@@ -15,13 +15,14 @@ var
   texPipe, texGooWipe,
   texLemon, texCookie, texBomb,
   texKaylaNormal, texKaylaOpen, texKaylaPortrait,
-  texHeartFill, texHeartEmpty,
-  texSheetKaylaOpen: TTexture;
+  texHeartFill, texHeartEmpty: TTexture;
+
+  texSheetKaylaOpen, texSheetBomb: TTexture;
 
   sfxCountdown, sfxCountdownEnd,
   sfxChomp, sfxItemSpawn, sfxExplosion: TMelody;
 
-  animKaylaOpen: TSprAnim;
+  animKaylaOpen, animBomb: TSprAnim;
 
 procedure PrintDefault(const text: string; const x, y: integer);
 function MeasureDefault(const text: string): integer;

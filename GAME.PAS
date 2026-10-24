@@ -762,7 +762,7 @@ begin
 
     if gameTime < fullnessPercStartTick + FullnessPercDuration then begin
       perc := (gameTime - fullnessPercStartTick) / FullnessPercDuration;
-      renderY := trunc(renderY - perc * 20);
+      renderY := trunc(renderY + LerpEased(-15, 0, perc, EaseOutQuad));
     end;
 
     s := i32str(round(fullness * 100)) + '%';

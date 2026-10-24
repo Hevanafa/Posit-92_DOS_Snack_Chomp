@@ -84,8 +84,8 @@ var
 
   { Only applies in the playing state }
   gameTime: double;
-  score: longint;
-  { fullness: double; }
+  { score: longint; }
+  fullness: double;
 
   isMouthOpen: boolean;
   lives: integer;
@@ -120,7 +120,8 @@ begin
   RandSeed := trunc(GetTimer);
 
   gameTime := 0.0;
-  score := 0;
+  { score := 0; }
+  fullness := 0.0;
   lives := MaxLives;
   invincibleEndTick := 0.0;
 
@@ -369,8 +370,9 @@ begin
 
           if isMouthOpen then begin
             { Eat food }
-            inc(score, 100);
-            SpawnFloatingText('+100', JudgementX, 100);
+            { inc(score, 100); }
+            fullness := fullness + 0.05;
+            SpawnFloatingText('+1', JudgementX, 100);
           end;
 
           foodList[a].active := false;
@@ -500,7 +502,10 @@ begin
       for a:=0 to lives - 1 do
         spr(texHeartFill, HeartBarX + a * 20, HeartBarY);
 
-    PrintScoreDozer(i32str(score), 8, 8);
+    { PrintScoreDozer(i32str(score), 8, 8); }
+    s := i32str(round(fullness * 100)) + '%';
+    w := MeasureScoreDozer(s);
+    PrintScoreDozer(s, (VGAWidth - w) shr 1, 32);
   end;
 
   { print('MemAvail: ' + i32str(longint(MemAvail)), 0, 20, 0); }

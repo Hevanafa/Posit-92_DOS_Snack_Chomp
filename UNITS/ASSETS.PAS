@@ -22,7 +22,9 @@ var
 procedure PrintDefault(const text: string; const x, y: integer);
 function MeasureDefault(const text: string): integer;
 procedure PrintBlack(const text: string; const x, y: integer);
+
 procedure PrintScoreDozer(const text: string; const x, y: integer);
+function MeasureScoreDozer(const text: string): integer;
 
 
 implementation
@@ -45,6 +47,11 @@ end;
 procedure PrintScoreDozer(const text: string; const x, y: integer);
 begin
   PrintBMFont(fontX14y20pxScoreDozer, text, x, y)
+end;
+
+function MeasureScoreDozer(const text:string):integer;
+begin
+  MeasureScoreDozer := MeasureBMFont(fontX14y20pxScoreDozer, text);
 end;
 
 

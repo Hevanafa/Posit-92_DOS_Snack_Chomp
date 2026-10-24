@@ -141,6 +141,10 @@ var
   animBombStartTick: double;
   animBombFrameIdx: integer;
 
+  isLostHeartVisible: boolean;
+  lostHeartIdx: integer;
+  lostHeartStartTick: double;
+
 
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
 var
@@ -182,6 +186,8 @@ begin
   headOffsetY := 0;
   goodFoodStartTick := -GoodFoodDuration * 2.0;
   badFoodStartTick := -BadFoodDuration;
+
+  isLostHeartVisible := false;
 
   RewindSprAnim(0.0, charHeadStartTick, charHeadFrameIdx);
 end;
@@ -462,6 +468,10 @@ begin
               badFoodStartTick := gameTime;
 
               PlayMelody(sfxExplosion);
+
+              isLostHeartVisible := true;
+              lostHeartIdx := lives - 1;
+              lostHeartStartTick := gameTime;
 
               dec(lives)
             end;

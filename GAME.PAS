@@ -79,6 +79,13 @@ type
     vel: TVector;
   end;
 
+  TWinPhase = (
+    WinPhaseWipeIn,
+    WinPhaseKaylaEnter,
+    WinPhaseKaylaSpeech,
+    WinPhaseDone
+  );
+
 const
   SafeFoodList: array[0..1] of TFoodType = (
     FoodCookie,
@@ -159,6 +166,7 @@ end;
 procedure InitWinTransition;
 begin
   actualGameState := GameStateWin;
+  winPhase := 0;
   winPhaseTimer := 0.0;
 end;
 
@@ -445,6 +453,11 @@ begin
 
   if actualGameState = GameStateWin then begin
     winPhaseTimer := winPhaseTimer + DeltaTime;
+
+    if winPhaseTimer >= TransitionDuration then begin
+      inc(winPhase);
+      winPhaseTimer := 0.0;
+    end;
   end;
 end;
 

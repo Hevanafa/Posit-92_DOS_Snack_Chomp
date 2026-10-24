@@ -434,6 +434,10 @@ begin
     end else
       gameTime := gameTime + DeltaTime;
   end;
+
+  if actualGameState = GameStateWin then begin
+    transitionTime := transitionTime + DeltaTime;
+  end;
 end;
 
 { Render logic }
@@ -444,6 +448,7 @@ var
   s: string;
   colour: byte;
   shiftX, renderX: integer;
+  wipeY: integer;
   now: double;
 begin
   now := GetTimer;
@@ -497,6 +502,7 @@ begin
       colour);
   end;
 
+
   if actualGameState = GameStatePlaying then begin
     if countdownNumber > 0 then begin
       s := I32Str(countdownNumber);
@@ -523,6 +529,13 @@ begin
     s := i32str(round(fullness * 100)) + '%';
     w := MeasureScoreDozer(s);
     PrintScoreDozer(s, (VGAWidth - w) shr 1, 32);
+  end;
+
+
+  if actualGameState = GameStateWin then begin
+    wipeY := trunc(transitionTime / 3.0 * VGAHeight);
+
+    { TODO: Implement the wipe sprite}
   end;
 
   { print('MemAvail: ' + i32str(longint(MemAvail)), 0, 20, 0); }

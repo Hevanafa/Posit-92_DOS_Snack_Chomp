@@ -11,7 +11,7 @@ uses
   CRT, DOS,
   P92CORE, P92CONV, P92GEOM, P92KBD, P92MOUSE,
   P92BMFON, P92GRAPH, P92TEX, P92TEXFX,
-  P92PANIC, P92TIME, P92VGA, P92EASE, P92SPKR,
+  P92PANIC, P92TIME, P92VGA, P92EASE, P92SPKR, P92ANIMS,
   ASSETS;
 
 const
@@ -123,6 +123,9 @@ var
   winPhase: TWinPhase;
   winPhaseTimer: double;
 
+  charHeadStartTick: double;
+  charHeadFrameIdx: integer;
+
   speechCol: integer;
 
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
@@ -160,6 +163,8 @@ begin
   nextSpawnTick := 2.0;
 
   speechCol := 0;
+
+  RewindSprAnim(0.0, charHeadStartTick, charHeadFrameIdx);
 end;
 
 procedure InitPlayingState;
@@ -374,6 +379,8 @@ begin
 
   CloneBMFont(fontP92SansBold, fontP92SansBoldBlack);
   ReplaceColour(fontP92SansBoldBlack.texture, 15, 0);
+
+  InitSprAnim(animKaylaOpen, texSheetKaylaOpen, 6, 64, 64, 1 / 3.0);
 
   InitTitleState;
   ResetGameplayState;

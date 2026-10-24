@@ -4,7 +4,7 @@ unit Assets;
 
 interface
 
-uses P92BMFON, P92TEX, P92SPKR;
+uses P92BMFON, P92TEX, P92SPKR, P92ANIMS;
 
 var
   fontP92SansBold, fontP92SansBoldBlack,
@@ -20,6 +20,8 @@ var
 
   sfxCountdown, sfxCountdownEnd,
   sfxChomp, sfxItemSpawn, sfxExplosion: TMelody;
+
+  animKaylaOpen: TSprAnim;
 
 procedure PrintDefault(const text: string; const x, y: integer);
 function MeasureDefault(const text: string): integer;

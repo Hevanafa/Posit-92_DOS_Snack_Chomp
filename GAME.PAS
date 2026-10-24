@@ -319,12 +319,13 @@ begin
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
   LoadBMFont(fontX14y20pxScoreDozer, 'FONTS\SCOREDOZ.TXT');
 
-  InitMelody(sfxChomp, 3);
+  InitMelody(sfxChomp, 4);
 
   with sfxChomp do begin
-    InitNote(notes^[0], 783, 0.05);
-    InitNote(notes^[1], 659, 0.05);
-    InitNote(notes^[2], 523, 0.05);
+    InitNote(notes^[0], 783, 0.025);
+    InitNote(notes^[1], 698, 0.025);
+    InitNote(notes^[2], 622, 0.025);
+    InitNote(notes^[3], 523, 0.025);
   end;
 
   InitMelody(sfxItemSpawn, 2);

@@ -177,8 +177,8 @@ begin
 
   headOffsetX := 0;
   headOffsetY := 0;
-  goodFoodStartTick := 0.0;
-  badFoodStartTick := 0.0;
+  goodFoodStartTick := -GoodFoodDuration * 2.0;
+  badFoodStartTick := -BadFoodDuration;
 
   RewindSprAnim(0.0, charHeadStartTick, charHeadFrameIdx);
 end;

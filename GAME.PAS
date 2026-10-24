@@ -104,6 +104,7 @@ const
 
   SpeechLine = 'I''ll goop everyone into my gooey obedient drones mwhehehehe';
 
+  FullnessPercDuration = 0.2;
   GoodFoodDuration = 0.25;
   BadFoodDuration = 0.5;
 
@@ -118,7 +119,9 @@ var
   { Only applies in the playing state }
   gameTime: double;
   { score: longint; }
+
   fullness: double;
+  fullnessPercStartTick: double;
 
   isMouthOpen: boolean;
   lives: integer;
@@ -177,7 +180,10 @@ begin
 
   gameTime := 0.0;
   { score := 0; }
+
   fullness := 0.0;
+  fullnessPercStartTick := -FullnessPercDuration;
+
   lives := MaxLives;
   invincibleEndTick := 0.0;
 

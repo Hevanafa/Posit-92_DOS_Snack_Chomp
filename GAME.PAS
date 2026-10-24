@@ -533,8 +533,8 @@ begin
     UpdateSprAnim(animKaylaOpen, gameTime, charHeadStartTick, charHeadFrameIdx);
     UpdateSprAnim(animBomb, gameTime, animBombStartTick, animBombFrameIdx);
 
-    if isLostHeartVisible then
-      if gameTime >= lostHeartStartTick + LostHeartDuration then
+    if isLostHeartVisible
+      and (gameTime >= lostHeartStartTick + LostHeartDuration) then
         isLostHeartVisible := false;
 
     if countdownNumber > 0 then begin

@@ -31,7 +31,8 @@ const
 
   JudgementX = 64;
   ConveyorItemY = 100;
-  MaxLives = 4;
+
+  MaxLives = 3;
   HeartBarX = 20;
   HeartBarY = 50;
 

@@ -11,7 +11,7 @@ uses
   CRT, DOS,
   P92CORE, P92CONV, P92GEOM, P92KBD, P92MOUSE,
   P92BMFON, P92GRAPH, P92TEX, P92TEXFX,
-  P92PANIC, P92TIME, P92VGA, P92EASE,
+  P92PANIC, P92TIME, P92VGA, P92EASE, P92SPKR,
   ASSETS;
 
 const
@@ -41,7 +41,7 @@ const
 {$ifdef release}
   MaxFullness = 1.0;
 {$else}
-  MaxFullness = 0.1;
+  MaxFullness = 1.0;
 {$endif}
   TransitionDuration = 2.0;
 
@@ -319,6 +319,13 @@ begin
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
   { LoadBMFont(fontP92SansBoldBlack, 'FONTS\P92SAN8B.TXT'); }
   LoadBMFont(fontX14y20pxScoreDozer, 'FONTS\SCOREDOZ.TXT');
+
+  InitMelody(sfxChomp, 3);
+  with sfxChomp do begin
+    InitNote(notes^[0], 330, 0.05);
+    InitNote(notes^[1], 250, 0.05);
+    InitNote(notes^[2], 200, 0.05);
+  end;
 end;
 
 { Free all the resources here }
@@ -403,6 +410,8 @@ begin
             { inc(score, 100); }
             fullness := fullness + 0.05;
             SpawnFloatingText('+1', JudgementX, 100);
+
+            PlayMelody(sfxChomp);
 
             if fullness >= MaxFullness then
               InitWinTransition;

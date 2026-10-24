@@ -4,7 +4,7 @@ unit Assets;
 
 interface
 
-uses P92BMFON, P92TEX;
+uses P92BMFON, P92TEX, P92SPKR;
 
 var
   fontP92SansBold, fontP92SansBoldBlack,
@@ -14,10 +14,10 @@ var
 
   texPipe, texGooWipe,
   texLemon, texCookie, texBomb,
-
   texKaylaNormal, texKaylaOpen, texKaylaPortrait,
-
   texHeartFill, texHeartEmpty: TTexture;
+
+  sfxChomp: TMelody;
 
 procedure PrintDefault(const text: string; const x, y: integer);
 function MeasureDefault(const text: string): integer;

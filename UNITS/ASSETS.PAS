@@ -12,7 +12,7 @@ var
 
   texSpecimenP92: array[0..1] of TTexture;
 
-  texPipe,
+  texPipe, texGooWipe,
   texLemon, texCookie, texBomb,
 
   texKaylaNormal, texKaylaOpen,

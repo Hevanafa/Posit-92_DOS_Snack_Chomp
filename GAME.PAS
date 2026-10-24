@@ -299,6 +299,7 @@ begin
   LoadTex(texHeartFill, 'IMG\HRTFILL.BMP');
 
   LoadTex(texPipe, 'IMG\PIPE.BMP');
+  LoadTex(texGooWipe, 'IMG\WIPE.BMP');
 
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
   { LoadBMFont(fontP92SansBoldBlack, 'FONTS\P92SAN8B.TXT'); }
@@ -534,8 +535,7 @@ begin
 
   if actualGameState = GameStateWin then begin
     wipeY := trunc(transitionTime / 3.0 * VGAHeight);
-
-    { TODO: Implement the wipe sprite}
+    spr(texGooWipe, 0, wipeY)
   end;
 
   { print('MemAvail: ' + i32str(longint(MemAvail)), 0, 20, 0); }

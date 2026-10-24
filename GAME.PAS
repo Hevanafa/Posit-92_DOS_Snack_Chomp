@@ -476,38 +476,42 @@ var
 begin
   now := GetTimer;
 
-  Cls($67);
+  if (actualGameState = GameStateTitle)
+    or (actualGameState = GameStatePlaying)
+    or ((actualGameState = GameStateWin) and (winPhase = WinPhaseWipeIn)) then begin
 
-  shiftX := trunc(frac(now) * 10);
+    Cls($67);
 
-  for a:=-(VGAHeight div 10) to VGAWidth div 10 do
-    line(
-      a * 10 + shiftX, 0,
-      a * 10 + shiftX + VGAHeight, VGAHeight,
-      $0F);
+    shiftX := trunc(frac(now) * 10);
 
-  for a:=0 to high(foodList) do begin
-    if not foodList[a].active then continue;
+    for a:=-(VGAHeight div 10) to VGAWidth div 10 do
+      line(
+        a * 10 + shiftX, 0,
+        a * 10 + shiftX + VGAHeight, VGAHeight,
+        $0F);
 
-    { Debug judgement line }
-    { VLine(trunc(foodList[a].x), 68, 132, $0F); }
+    for a:=0 to high(foodList) do begin
+      if not foodList[a].active then continue;
 
-    renderX := trunc(foodList[a].pos.x - foodList[a].texture^.width / 2);
-    Spr(foodList[a].texture^, renderX, trunc(foodList[a].pos.y));
+      { Debug judgement line }
+      { VLine(trunc(foodList[a].x), 68, 132, $0F); }
+
+      renderX := trunc(foodList[a].pos.x - foodList[a].texture^.width / 2);
+      Spr(foodList[a].texture^, renderX, trunc(foodList[a].pos.y));
+    end;
+
+    UnsafeSpr(texPipe, PipeX, PipeY);
+
+    if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
+      if isMouthOpen then
+        spr(texKaylaOpen, CharHeadX, CharHeadY)
+      else
+        spr(texKaylaNormal, CharHeadX, CharHeadY);
+    end;
+  {$ifndef release}
+    { VLine(JudgementX, 68, 132, $0F); }
+  {$endif}
   end;
-
-  UnsafeSpr(texPipe, PipeX, PipeY);
-
-  if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
-    if isMouthOpen then
-      spr(texKaylaOpen, CharHeadX, CharHeadY)
-    else
-      spr(texKaylaNormal, CharHeadX, CharHeadY);
-  end;
-
-{$ifndef release}
-  { VLine(JudgementX, 68, 132, $0F); }
-{$endif}
 
   { HUD & overlay stuff }
 
@@ -575,7 +579,9 @@ begin
           (VGAWidth - texKaylaPortrait.width) shr 1,
           portraitY);
       end;
+
       WinPhaseKaylaSpeech: ;
+
       WinPhaseDone: ;
     end;
   end;

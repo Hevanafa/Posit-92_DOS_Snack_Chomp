@@ -161,6 +161,7 @@ begin
 
   countdownNumber := 3;
   countdownNextTick := GetTimer + 1.0;
+  PlayMelody(sfxCountdown);
 end;
 
 procedure InitWinTransition;
@@ -319,6 +320,11 @@ begin
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
   LoadBMFont(fontX14y20pxScoreDozer, 'FONTS\SCOREDOZ.TXT');
 
+  InitMelody(sfxCountdown, 1);
+  InitNote(sfxCountdown.notes^[0], 131, 0.1);
+  InitMelody(sfxCountdownEnd, 1);
+  InitNote(sfxCountdownEnd.notes^[0], 523, 0.1);
+
   InitMelody(sfxChomp, 4);
 
   with sfxChomp do begin
@@ -475,6 +481,11 @@ begin
       if now >= countdownNextTick then begin
         countdownNextTick := now + 1.0;
         dec(countdownNumber);
+
+        if countdownNumber > 0 then
+          PlayMelody(sfxCountdown)
+        else
+          PlayMelody(sfxCountdownEnd);
       end;
     end else
       gameTime := gameTime + DeltaTime;

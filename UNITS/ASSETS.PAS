@@ -17,6 +17,7 @@ var
   texKaylaNormal, texKaylaOpen, texKaylaPortrait,
   texHeartFill, texHeartEmpty: TTexture;
 
+  sfxCountdown, sfxCountdownEnd,
   sfxChomp, sfxItemSpawn, sfxExplosion: TMelody;
 
 procedure PrintDefault(const text: string; const x, y: integer);

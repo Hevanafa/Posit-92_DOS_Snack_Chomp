@@ -327,14 +327,21 @@ begin
     InitNote(notes^[2], 523, 0.05);
   end;
 
+  InitMelody(sfxItemSpawn, 2);
+
+  with sfxItemSpawn do begin
+    InitNote(notes^[0], 523, 0.025);
+    InitNote(notes^[1], 784, 0.025);
+  end;
+
   InitMelody(sfxExplosion, 5);
 
   with sfxExplosion do begin
-    InitNote(notes^[0], 160, 0.033);
-    InitNote(notes^[1], 113, 0.033);
-    InitNote(notes^[2], 137, 0.033);
-    InitNote(notes^[3], 82, 0.033);
-    InitNote(notes^[4], 61, 0.033);
+    InitNote(notes^[0], 160, 0.016);
+    InitNote(notes^[1], 113, 0.016);
+    InitNote(notes^[2], 137, 0.016);
+    InitNote(notes^[3], 82, 0.016);
+    InitNote(notes^[4], 61, 0.016);
   end;
 end;
 
@@ -437,6 +444,7 @@ begin
 
     if gameTime >= nextSpawnTick then begin
       nextSpawnTick := gameTime + 1 / FoodSpawnRate;
+      PlayMelody(sfxItemSpawn);
 
       pick := random(4);
 

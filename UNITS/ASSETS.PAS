@@ -17,7 +17,7 @@ var
   texKaylaNormal, texKaylaOpen, texKaylaPortrait,
   texHeartFill, texHeartEmpty: TTexture;
 
-  sfxChomp, sfxExplosion: TMelody;
+  sfxChomp, sfxItemSpawn, sfxExplosion: TMelody;
 
 procedure PrintDefault(const text: string; const x, y: integer);
 function MeasureDefault(const text: string): integer;

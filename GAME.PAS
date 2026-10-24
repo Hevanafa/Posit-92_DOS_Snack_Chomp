@@ -466,6 +466,10 @@ begin
         end;
       end;
 
+      if foodList[a].isBouncing
+        and (gameTime >= foodList[a].bounceStartTick + FoodBounceDuration * 4) then
+          foodList[a].isBouncing := false;
+
       if not foodList[a].isFalling then begin
         foodList[a].pos.x := foodList[a].pos.x - ConveyorSpeed * DeltaTime;
 
@@ -643,7 +647,12 @@ begin
 
       if foodList[a].isBouncing then begin
         elapsed := gameTime - foodList[a].bounceStartTick;
-        renderY := trunc(renderY + elapsed * 20);
+        perc := elapsed / FoodBounceDuration;
+
+        if perc < 2.0 then
+          renderY := trunc(renderY + sin(perc / 2.0 * pi) * 20)
+        else if perc < 4.0 then
+          renderY := trunc(renderY + sin((perc - 2.0) / 2.0 * pi) * 10)
       end;
 
       if foodList[a].foodType = FoodBomb then

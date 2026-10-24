@@ -95,7 +95,7 @@ const
 
   SpeechLine = 'I''ll goop everyone into my gooey obedient drones mwhehehehe';
 
-  GoodFoodDuration = 0.5;
+  GoodFoodDuration = 0.25;
 
 var
   { Game state variables }
@@ -461,7 +461,7 @@ begin
               fullness := fullness + 0.05;
               SpawnFloatingText('+1', JudgementX, 100);
 
-              goodFoodStartTick := gameTime + 0.5;
+              goodFoodStartTick := gameTime;
 
               PlayMelody(sfxChomp);
 
@@ -604,9 +604,15 @@ begin
 
     UnsafeSpr(texPipe, PipeX, PipeY);
 
-    if gameTime < goodFoodStartTick + GoodFoodDuration then begin
+    if gameTime < goodFoodStartTick + GoodFoodDuration * 2 then begin
       perc := (gameTime - goodFoodStartTick) / GoodFoodDuration;
-      headOffsetY := trunc(perc * 10.0);
+
+      if perc < 1.0 then
+        headOffsetY := trunc(LerpEased(0, -10, perc, EaseOutQuad))
+      else if perc < 2.0 then
+        headOffsetY := trunc(LerpEased(-10, 0, perc - 1.0, EaseOutQuad))
+      else
+        headOffsetY := 0;
     end;
 
     if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin

@@ -109,7 +109,9 @@ var
   nextSpawnTick: double;
 
   floatingTexts: array[0..9] of TFloatingText;
-  transitionTime: double;
+
+  winPhase: integer;
+  winPhaseTimer: double;
 
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
 var
@@ -157,7 +159,7 @@ end;
 procedure InitWinTransition;
 begin
   actualGameState := GameStateWin;
-  transitionTime := 0.0;
+  winPhaseTimer := 0.0;
 end;
 
 procedure SpawnFood(const foodType: TFoodType; const x, y: double);
@@ -442,7 +444,7 @@ begin
   end;
 
   if actualGameState = GameStateWin then begin
-    transitionTime := transitionTime + DeltaTime;
+    winPhaseTimer := winPhaseTimer + DeltaTime;
   end;
 end;
 
@@ -541,7 +543,7 @@ begin
 
 
   if actualGameState = GameStateWin then begin
-    perc := transitionTime / TransitionDuration;
+    perc := winPhaseTimer / TransitionDuration;
     wipeY := trunc(LerpEased(0, VGAHeight, perc, EaseOutQuad));
     RectFill(0, 0, VGAWidth, wipeY, WipeColour);
     spr(texGooWipe, 0, wipeY)

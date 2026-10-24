@@ -47,6 +47,8 @@ const
 
   WinTransitionDuration = 2.0;
   LostHeartDuration = 0.5;
+  { this is repeated until perc = 4.0 }
+  FoodBounceDuration = 0.1;
 
 type
   TGameState = (
@@ -71,7 +73,10 @@ type
     pos: TPoint;
     texture: PTexture;
     isHarming: boolean;
+
     isFalling: boolean;
+    isBouncing: boolean;
+    bounceStartTick: double;
   end;
 
   TFloatingText = record
@@ -455,6 +460,9 @@ begin
         if foodList[a].pos.y >= ConveyorItemY then begin
           foodList[a].pos.y := ConveyorItemY;
           foodList[a].isFalling := false;
+
+          foodList[a].isBouncing := true;
+          foodList[a].bounceStartTick := gameTime;
         end;
       end;
 
@@ -581,8 +589,9 @@ var
   start: integer;
   rowOffset: word;
 
-  shiftX, renderX: integer;
-  perc: double;
+  shiftX: integer;
+  renderX, renderY: integer;
+  perc, elapsed: double;
   wipeY, portraitY: integer;
 begin
   now := GetTimer;
@@ -629,11 +638,12 @@ begin
       { VLine(trunc(foodList[a].x), 68, 132, $0F); }
 
       renderX := trunc(foodList[a].pos.x - foodList[a].texture^.width / 2);
+      renderY := trunc(foodList[a].pos.y);
 
       if foodList[a].foodType = FoodBomb then
-        DrawSprAnim(animBomb, renderX, trunc(foodList[a].pos.y), animBombFrameIdx)
+        DrawSprAnim(animBomb, renderX, renderY, animBombFrameIdx)
       else
-        Spr(foodList[a].texture^, renderX, trunc(foodList[a].pos.y));
+        Spr(foodList[a].texture^, renderX, renderY);
     end;
 
     UnsafeSpr(texPipe, PipeX, PipeY);
@@ -713,12 +723,12 @@ begin
         spr(texHeartFill, HeartBarX + a * 20, HeartBarY);
 
     if isLostHeartVisible and isBlinkingVisible then begin
-      perc := gameTime - lostHeartStartTick;
+      elapsed := gameTime - lostHeartStartTick;
 
       spr(
         texHeartFill,
         HeartBarX + lostHeartIdx * 20,
-        trunc(HeartBarY + perc * 20));
+        trunc(HeartBarY + elapsed * 20));
     end;
 
     { PrintScoreDozer(i32str(score), 8, 8); }

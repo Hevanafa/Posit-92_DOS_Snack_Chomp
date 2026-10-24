@@ -638,7 +638,13 @@ begin
       { VLine(trunc(foodList[a].x), 68, 132, $0F); }
 
       renderX := trunc(foodList[a].pos.x - foodList[a].texture^.width / 2);
+
       renderY := trunc(foodList[a].pos.y);
+
+      if foodList[a].isBouncing then begin
+        elapsed := gameTime - foodList[a].bounceStartTick;
+        renderY := trunc(renderY + elapsed * 20);
+      end;
 
       if foodList[a].foodType = FoodBomb then
         DrawSprAnim(animBomb, renderX, renderY, animBombFrameIdx)

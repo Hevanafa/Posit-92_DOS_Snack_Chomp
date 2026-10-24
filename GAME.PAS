@@ -444,7 +444,7 @@ begin
 
     if gameTime >= nextSpawnTick then begin
       nextSpawnTick := gameTime + 1 / FoodSpawnRate;
-      PlayMelody(sfxItemSpawn);
+      { PlayMelody(sfxItemSpawn); }
 
       pick := random(4);
 

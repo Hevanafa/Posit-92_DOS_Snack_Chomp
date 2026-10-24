@@ -531,6 +531,10 @@ begin
 
 
   if actualGameState = GameStatePlaying then begin
+    s := 'Hold Spacebar to close Kayla''s mouth';
+    w := MeasureDefault(s);
+    PrintBlack(s, (VGAWidth - w) shr 1, 150);
+
     if countdownNumber > 0 then begin
       s := I32Str(countdownNumber);
       w := MeasureDefault(s);

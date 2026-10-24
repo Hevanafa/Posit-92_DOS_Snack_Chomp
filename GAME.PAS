@@ -492,6 +492,8 @@ begin
       floatingTexts[a].pos.x := floatingTexts[a].pos.x + floatingTexts[a].vel.x * DeltaTime;
     end;
 
+    UpdateSprAnim(animKaylaOpen, gameTime, charHeadStartTick, charHeadFrameIdx);
+
     if countdownNumber > 0 then begin
       if now >= countdownNextTick then begin
         countdownNextTick := now + 1.0;
@@ -569,7 +571,8 @@ begin
 
     if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
       if isMouthOpen then
-        spr(texKaylaOpen, CharHeadX, CharHeadY)
+        { spr(texKaylaOpen, CharHeadX, CharHeadY) }
+        DrawSprAnim(animKaylaOpen, CharHeadX, CharHeadY, charHeadFrameIdx)
       else
         spr(texKaylaNormal, CharHeadX, CharHeadY);
     end;

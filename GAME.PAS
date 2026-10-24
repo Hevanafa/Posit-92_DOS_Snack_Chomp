@@ -96,6 +96,7 @@ const
   SpeechLine = 'I''ll goop everyone into my gooey obedient drones mwhehehehe';
 
   GoodFoodDuration = 0.25;
+  BadFoodDuration = 0.5;
 
 var
   { Game state variables }
@@ -134,6 +135,8 @@ var
   headOffsetX, headOffsetY: integer;
   { uses game time }
   goodFoodStartTick: double;
+  { uses game time }
+  badFoodStartTick: double;
 
 
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
@@ -175,6 +178,7 @@ begin
   headOffsetX := 0;
   headOffsetY := 0;
   goodFoodStartTick := 0.0;
+  badFoodStartTick := 0.0;
 
   RewindSprAnim(0.0, charHeadStartTick, charHeadFrameIdx);
 end;
@@ -449,7 +453,10 @@ begin
 
             if isMouthOpen and (not IsInvincible) then begin
               invincibleEndTick := gameTime + InvincibleDuration;
+              badFoodStartTick := gameTime;
+
               PlayMelody(sfxExplosion);
+
               dec(lives)
             end;
           end else begin
@@ -604,15 +611,24 @@ begin
 
     UnsafeSpr(texPipe, PipeX, PipeY);
 
-    if gameTime < goodFoodStartTick + GoodFoodDuration * 2 then begin
-      perc := (gameTime - goodFoodStartTick) / GoodFoodDuration;
+    if actualGameState = GameStatePlaying then begin
+      if gameTime < badFoodStartTick + BadFoodDuration then
+        headOffsetX := random(10) - 5
+      else
+        headOffsetX := 0;
 
-      if perc < 1.0 then
-        headOffsetY := trunc(LerpEased(0, -10, perc, EaseOutQuad))
-      else if perc < 2.0 then
-        headOffsetY := trunc(LerpEased(-10, 0, perc - 1.0, EaseInQuad));
-    end else
-      headOffsetY := 0;
+      if gameTime < goodFoodStartTick + GoodFoodDuration * 2 then begin
+        perc := (gameTime - goodFoodStartTick) / GoodFoodDuration;
+
+        if perc < 1.0 then
+          headOffsetY := trunc(LerpEased(0, -10, perc, EaseOutQuad))
+        else if perc < 2.0 then
+          headOffsetY := trunc(LerpEased(-10, 0, perc - 1.0, EaseInQuad));
+      end else
+        headOffsetY := 0;
+    end;
+
+    { Render the player head }
 
     if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
       if isMouthOpen then

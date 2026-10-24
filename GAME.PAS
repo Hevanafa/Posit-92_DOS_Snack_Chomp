@@ -95,6 +95,8 @@ const
 
   SpeechLine = 'I''ll goop everyone into my gooey obedient drones mwhehehehe';
 
+  GoodFoodDuration = 0.5;
+
 var
   { Game state variables }
   actualGameState: TGameState;
@@ -130,7 +132,8 @@ var
   speechCol: integer;
 
   headOffsetX, headOffsetY: integer;
-  goodFoodTimer: double;
+  { uses game time }
+  goodFoodStartTick: double;
 
 
 procedure ReplaceColour(var tex: TTexture; const oldColour, newColour: byte);
@@ -168,6 +171,10 @@ begin
   nextSpawnTick := 2.0;
 
   speechCol := 0;
+
+  headOffsetX := 0;
+  headOffsetY := 0;
+  goodFoodStartTick := 0.0;
 
   RewindSprAnim(0.0, charHeadStartTick, charHeadFrameIdx);
 end;
@@ -438,28 +445,29 @@ begin
 
         if foodList[a].pos.x < JudgementX then begin
           if foodList[a].isHarming then begin
-            { Eat harming food }
+            { Eat bad food }
 
             if isMouthOpen and (not IsInvincible) then begin
               invincibleEndTick := gameTime + InvincibleDuration;
               PlayMelody(sfxExplosion);
               dec(lives)
             end;
+          end else begin
+            { Eat good food }
 
-            foodList[a].active := false;
-            continue
-          end;
+            if isMouthOpen then begin
+              { Eat food }
+              { inc(score, 100); }
+              fullness := fullness + 0.05;
+              SpawnFloatingText('+1', JudgementX, 100);
 
-          if isMouthOpen then begin
-            { Eat food }
-            { inc(score, 100); }
-            fullness := fullness + 0.05;
-            SpawnFloatingText('+1', JudgementX, 100);
+              goodFoodStartTick := gameTime + 0.5;
 
-            PlayMelody(sfxChomp);
+              PlayMelody(sfxChomp);
 
-            if fullness >= MaxFullness then
-              InitWinTransition;
+              if fullness >= MaxFullness then
+                InitWinTransition;
+            end;
           end;
 
           foodList[a].active := false;
@@ -512,6 +520,7 @@ begin
     end else
       gameTime := gameTime + DeltaTime;
   end;
+
 
   if actualGameState = GameStateWin then begin
     if winPhase in [WinPhaseWipeIn, WinPhaseKaylaEnter] then begin
@@ -595,12 +604,17 @@ begin
 
     UnsafeSpr(texPipe, PipeX, PipeY);
 
+    if gameTime < goodFoodStartTick + GoodFoodDuration then begin
+      perc := (gameTime - goodFoodStartTick) / GoodFoodDuration;
+      headOffsetY := trunc(perc * 10.0);
+    end;
+
     if not IsInvincible or (isBlinkingVisible and IsInvincible) then begin
       if isMouthOpen then
         { spr(texKaylaOpen, CharHeadX, CharHeadY) }
-        DrawSprAnim(animKaylaOpen, CharHeadX, CharHeadY, charHeadFrameIdx)
+        DrawSprAnim(animKaylaOpen, CharHeadX + headOffsetX, CharHeadY + headOffsetY, charHeadFrameIdx)
       else
-        spr(texKaylaNormal, CharHeadX, CharHeadY);
+        spr(texKaylaNormal, CharHeadX + headOffsetX, CharHeadY + headOffsetY);
     end;
   {$ifndef release}
     { VLine(JudgementX, 68, 132, $0F); }

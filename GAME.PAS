@@ -493,7 +493,7 @@ end;
 { Render logic }
 procedure Draw; far;
 var
-  a: integer;
+  a, b, col: integer;
   w: integer;
   s: string;
   colour: byte;
@@ -513,11 +513,14 @@ begin
 
     shiftX := trunc(frac(now) * 10);
 
-    for a:=-(VGAHeight div 10) to VGAWidth div 10 do
-      line(
-        a * 10 + shiftX, 0,
-        a * 10 + shiftX + VGAHeight, VGAHeight,
-        $0F);
+    for col:=-(VGAHeight div 10) to VGAWidth div 10 do
+      for b:=0 to VGAHeight-1 do
+        PSet(col * 10 + b + shiftX, b, $0F);
+
+        { line(
+          col * 10 + shiftX, 0,
+          col * 10 + shiftX + VGAHeight, VGAHeight,
+          $0F); }
 
     for a:=0 to high(foodList) do begin
       if not foodList[a].active then continue;

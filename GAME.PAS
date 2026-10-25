@@ -146,7 +146,7 @@ var
   charHeadFrameIdx: integer;
 
   { used in ending }
-  speechCol: integer;
+  speechRow, speechCol: integer;
 
   headOffsetX, headOffsetY: integer;
   { uses game time }
@@ -202,8 +202,6 @@ begin
 
   nextSpawnTick := 2.0;
 
-  speechCol := 0;
-
   headOffsetX := 0;
   headOffsetY := 0;
   goodFoodStartTick := -GoodFoodDuration * 2.0;
@@ -226,6 +224,12 @@ begin
   actualGameState := GameStateWin;
   winPhase := low(TWinPhase);
   winPhaseTimer := 0.0;
+end;
+
+procedure InitHeroSpeech;
+begin
+  speechRow := 0;
+  speechCol := 1;
 end;
 
 procedure InitLoseState;
@@ -425,7 +429,7 @@ begin
     InitNote(notes^[2], 392, 0.25);
     InitNote(notes^[3], 523, 0.25);
     InitNote(notes^[4], 659, 0.25);
-    InitNote(notes^[5], 784, 0.25);
+    InitNote(notes^[5], 784, 0.75);
   end;
 end;
 
@@ -543,7 +547,9 @@ begin
 
               if fullness >= MaxFullness then begin
                 PlayMelody(sfxWinChime);
-                InitWinTransition
+
+                InitWinTransition;
+                InitHeroSpeech;
               end else
                 PlayMelody(sfxChomp);
             end;

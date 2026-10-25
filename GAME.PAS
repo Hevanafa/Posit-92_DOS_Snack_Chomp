@@ -193,6 +193,9 @@ begin
   isBlinkingVisible := true;
   isMouthOpen := false;
 
+  countdownNumber := 3;
+  countdownNextTick := GetTimer + 1.0;
+
   nextSpawnTick := 2.0;
 
   speechCol := 0;
@@ -211,8 +214,6 @@ procedure InitPlayingState;
 begin
   actualGameState := GameStatePlaying;
 
-  countdownNumber := 3;
-  countdownNextTick := GetTimer + 1.0;
   PlayMelody(sfxCountdown);
 end;
 
@@ -456,8 +457,8 @@ begin
 
   if actualGameState = GameStateLose then begin
     if IsKeyDown(SC_ENTER) then begin
-      actualGameState := GameStatePlaying;
       ResetGameplayState;
+      InitPlayingState;
     end;
   end;
 

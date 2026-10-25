@@ -20,7 +20,7 @@ var
   texSheetKaylaOpen, texSheetBomb: TTexture;
 
   sfxCountdown, sfxCountdownEnd,
-  sfxChomp, sfxItemSpawn, sfxExplosion: TMelody;
+  sfxChomp, sfxItemSpawn, sfxExplosion, sfxWinChime: TMelody;
 
   animKaylaOpen, animBomb: TSprAnim;
 

@@ -412,6 +412,17 @@ begin
     InitNote(notes^[3], 82, 0.016);
     InitNote(notes^[4], 61, 0.016);
   end;
+
+  InitMelody(sfxWinChime, 6);
+
+  with sfxWinChime do begin
+    InitNote(notes^[0], 262, 0.25);
+    InitNote(notes^[1], 330, 0.25);
+    InitNote(notes^[2], 392, 0.25);
+    InitNote(notes^[3], 523, 0.25);
+    InitNote(notes^[4], 659, 0.25);
+    InitNote(notes^[5], 784, 0.25);
+  end;
 end;
 
 { Free all the resources here }
@@ -526,10 +537,11 @@ begin
 
               goodFoodStartTick := gameTime;
 
-              PlayMelody(sfxChomp);
-
-              if fullness >= MaxFullness then
-                InitWinTransition;
+              if fullness >= MaxFullness then begin
+                PlayMelody(sfxWinChime);
+                InitWinTransition
+              end else
+                PlayMelody(sfxChomp);
             end;
           end;
 

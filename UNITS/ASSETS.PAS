@@ -27,6 +27,7 @@ var
 procedure PrintDefault(const text: string; const x, y: integer);
 function MeasureDefault(const text: string): integer;
 procedure PrintBlack(const text: string; const x, y: integer);
+procedure PrintCentred(const font: TBMFont; const text: string; const cx, y: integer);
 
 procedure PrintScoreDozer(const text: string; const x, y: integer);
 function MeasureScoreDozer(const text: string): integer;
@@ -47,6 +48,14 @@ end;
 procedure PrintBlack(const text: string; const x, y: integer);
 begin
   PrintBMFont(fontP92SansBoldBlack, text, x, y);
+end;
+
+procedure PrintCentred(const font: TBMFont; const text: string; const cx, y: integer);
+var
+  w: integer;
+begin
+  w := MeasureBMFont(font, text);
+  PrintBMFont(font, text, cx - w shr 1, y);
 end;
 
 procedure PrintScoreDozer(const text: string; const x, y: integer);

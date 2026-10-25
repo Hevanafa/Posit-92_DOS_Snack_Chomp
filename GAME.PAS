@@ -57,7 +57,7 @@ type
     GameStateTitle,
     GameStatePlaying,
     GameStateWin,
-    GameStateOver
+    GameStateLose
   );
 
   { 2D vector }
@@ -222,6 +222,12 @@ begin
   winPhase := low(TWinPhase);
   winPhaseTimer := 0.0;
 end;
+
+procedure InitLoseState;
+begin
+  actualGameState := GameStateLose;
+end;
+
 
 procedure SpawnFood(const foodType: TFoodType; const x, y: double);
 var
@@ -495,7 +501,10 @@ begin
               lostHeartIdx := lives - 1;
               lostHeartStartTick := gameTime;
 
-              dec(lives)
+              dec(lives);
+
+              if lives <= 0 then
+                InitLoseState;
             end;
           end else begin
             { Eat good food }
@@ -768,6 +777,19 @@ begin
     s := i32str(round(fullness * 100)) + '%';
     w := MeasureScoreDozer(s);
     PrintScoreDozer(s, (VGAWidth - w) shr 1, renderY);
+  end;
+
+
+  if actualGameState = GameStateLose then begin
+    PrintCentred(
+      fontP92SansBoldBlack,
+      'You ran out of lives!',
+      VGAWidth shr 1, 90);
+
+    PrintCentred(
+      fontP92SansBoldBlack,
+      'Press ENTER to try again',
+      VGAWidth shr 1, 110);
   end;
 
 

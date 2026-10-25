@@ -91,8 +91,8 @@ type
 
   TWinPhase = (
     WinPhaseWipeIn,
-    WinPhaseKaylaEnter,
-    WinPhaseKaylaSpeech,
+    WinPhaseHeroEnter,
+    WinPhaseHeroSpeech,
     WinPhaseDone
   );
 
@@ -603,7 +603,7 @@ begin
 
 
   if actualGameState = GameStateWin then begin
-    if winPhase in [WinPhaseWipeIn, WinPhaseKaylaEnter] then begin
+    if winPhase in [WinPhaseWipeIn, WinPhaseHeroEnter] then begin
       winPhaseTimer := winPhaseTimer + DeltaTime;
 
       if winPhaseTimer >= WinTransitionDuration then begin
@@ -612,7 +612,7 @@ begin
       end;
     end;
 
-    if winphase = WinPhaseKaylaSpeech then begin
+    if winphase = WinPhaseHeroSpeech then begin
       if speechCol < length(SpeechLine) then
         inc(speechCol);
     end;
@@ -820,7 +820,7 @@ begin
         spr(texGooWipe, 0, wipeY)
       end;
 
-      WinPhaseKaylaEnter: begin
+      WinPhaseHeroEnter: begin
         cls(160);
 
         perc := winPhaseTimer / WinTransitionDuration;
@@ -832,7 +832,7 @@ begin
           portraitY);
       end;
 
-      WinPhaseKaylaSpeech,
+      WinPhaseHeroSpeech,
       WinPhaseDone: begin
         cls(160);
 

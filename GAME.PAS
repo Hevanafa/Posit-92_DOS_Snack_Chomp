@@ -102,7 +102,11 @@ const
     FoodLemon
   );
 
-  SpeechLine = 'I''ll goop everyone into my gooey obedient drones mwhehehehe';
+  SpeechLines: array[0..2] of string = (
+    'I''ll goop everyone into my gooey,',
+    'obedient drones mwhehehehe',
+    ''
+  );
 
   FullnessPercDuration = 0.2;
   GoodFoodDuration = 0.25;

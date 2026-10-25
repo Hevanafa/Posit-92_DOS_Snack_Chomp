@@ -423,8 +423,6 @@ end;
 { Init game state variables here }
 procedure OnReady; far;
 begin
-  actualGameState := GameStateTitle;
-
   CloneBMFont(fontP92SansBold, fontP92SansBoldBlack);
   ReplaceColour(fontP92SansBoldBlack.texture, 15, 0);
 
@@ -454,6 +452,13 @@ begin
   if actualGameState = GameStateTitle then begin
     if IsKeyDown(SC_SPACE) then
       InitPlayingState;
+  end;
+
+  if actualGameState = GameStateLose then begin
+    if IsKeyDown(SC_ENTER) then begin
+      actualGameState := GameStatePlaying;
+      ResetGameplayState;
+    end;
   end;
 
 

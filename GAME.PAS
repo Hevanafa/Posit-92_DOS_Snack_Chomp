@@ -623,8 +623,14 @@ begin
     end;
 
     if winphase = WinPhaseHeroSpeech then begin
-      if speechCol < length(SpeechLine) then
-        inc(speechCol);
+      if speechRow < high(SpeechLines) then begin
+        if speechCol < length(SpeechLines[speechRow]) then
+          inc(speechCol)
+        else begin
+          inc(speechRow);
+          speechCol := 1;
+        end;
+      end;
     end;
   end;
 end;

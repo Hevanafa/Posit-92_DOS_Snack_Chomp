@@ -497,8 +497,33 @@ end;
 { Free all the resources here }
 procedure OnCleanup; far;
 begin
+  {
   FreeTex(texSpecimenP92[0]);
   FreeTex(texSpecimenP92[1]);
+  }
+
+  FreeBMFont(fontP92SansBold);
+  FreeBMFont(fontP92SansBoldBlack);
+  FreeBMFont(fontX14y20pxScoreDozer);
+
+  FreeTex(texPipe);
+  FreeTex(texGooWipe);
+  FreeTex(texLemon);
+  FreeTex(texCookie);
+  FreeTex(texBomb);
+  FreeTex(texTitleArt);
+  FreeTex(texKaylaNormal);
+  FreeTex(texKaylaOpen);
+  FreeTex(texKaylaPortrait);
+  FreeTex(texHeartFill);
+  FreeTex(texHeartEmpty);
+
+  FreeMelody(sfxCountdown);
+  FreeMelody(sfxCountdownEnd);
+  FreeMelody(sfxChomp);
+  FreeMelody(sfxItemSpawn);
+  FreeMelody(sfxExplosion);
+  FreeMelody(sfxWinChime);
 end;
 
 { Init game state variables here }

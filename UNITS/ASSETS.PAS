@@ -10,7 +10,7 @@ var
   fontP92SansBold, fontP92SansBoldBlack,
   fontX14y20pxScoreDozer: TBMFont;
 
-  texSpecimenP92: array[0..1] of TTexture;
+  { texSpecimenP92: array[0..1] of TTexture; }
 
   texPipe, texGooWipe,
   texLemon, texCookie, texBomb,

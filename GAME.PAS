@@ -1,3 +1,15 @@
+{
+  Snack Chomp game
+  A game by Hevanafa
+
+  Made in October 2026
+  for the Tribute to DOSBox game jam on itch.io
+
+  Ended up with "Snackline" as the game title
+
+  Use Shift+Q to quit, on release mode
+}
+
 {$IFDEF FPC}
 library Game;
 {$MODE TP}

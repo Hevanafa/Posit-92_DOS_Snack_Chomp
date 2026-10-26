@@ -345,28 +345,24 @@ end;
 procedure RectDarken(const x0, y0, x1, y1: integer);
 var
   a, b: integer;
-  srcOffset: word;
+  rowBaseOffset, destOffset: word;
 begin
-  for b:=y0 to y1 do
-    for a:=x0 to x1 do begin
-      srcOffset := b * VGAWidth + a;
+  for b:=y0 to y1 do begin
+    rowBaseOffset := b * VGAWidth;
+    destOffset := rowBaseOffset + x0;
 
-      case backBuffer^[srcOffset] of
+    for a:=x0 to x1 do begin
+      case backBuffer^[destOffset] of
         $08..$0F, $18..$1F:
-          backBuffer^[srcOffset] := backBuffer^[srcOffset] - 8;
+          backBuffer^[destOffset] := backBuffer^[destOffset] - 8;
         $20..$67:
-          backBuffer^[srcOffset] := backBuffer^[srcOffset] + $48;
+          backBuffer^[destOffset] := backBuffer^[destOffset] + $48;
         else
       end;
 
-      {
-      if (backBuffer^[srcOffset] in [$08..$0F])
-        or (backBuffer^[srcOffset] in [$18..$1F]) then
-        backBuffer^[srcOffset] := backBuffer^[srcOffset] - 8
-      else if backBuffer^[srcOffset] in [$20..$67] then
-        backBuffer^[srcOffset] := backBuffer^[srcOffset] + $48;
-      }
+      inc(destOffset);
     end;
+  end;
 end;
 
 procedure UnsafeSpr(const tex: TTexture; const x, y: integer);

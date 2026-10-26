@@ -114,6 +114,7 @@ const
 
   HeroName = 'Kayla the latex sharky';
   HeroNameColour = 59;
+  HeroSpeechBoxX = 20;
   HeroSpeechBoxY = 150;
 
 var
@@ -355,7 +356,7 @@ begin
       case backBuffer^[destOffset] of
         $08..$0F, $18..$1F:
           backBuffer^[destOffset] := backBuffer^[destOffset] - 8;
-        $20..$67:
+        $20..$67, $68..$B0:
           backBuffer^[destOffset] := backBuffer^[destOffset] + $48;
         else
       end;
@@ -980,10 +981,14 @@ begin
             $00); }
 
         RectDarken(
-          20, HeroSpeechBoxY,
+          HeroSpeechBoxX, HeroSpeechBoxY,
           VGAWidth - 20, HeroSpeechBoxY + 40);
 
-        PrintBMFontTint(fontP92SansBold, HeroName, 20, HeroSpeechBoxY, HeroNameColour);
+        PrintBMFontTint(
+          fontP92SansBold,
+          HeroName,
+          HeroSpeechBoxX + 10, HeroSpeechBoxY,
+          HeroNameColour);
 
         if speechRow > 0 then
           for a:=0 to speechRow - 1 do
@@ -996,7 +1001,7 @@ begin
         if IsSpeechDone then begin
           s := '(Click to continue)';
           w := MeasureDefault(s);
-          PrintDefault(s, VGAWidth - 10 - w, HeroSpeechBoxY + 40);
+          PrintDefault(s, VGAWidth - 30 - w, HeroSpeechBoxY + 30);
         end;
 
         if speechCol > 0 then begin

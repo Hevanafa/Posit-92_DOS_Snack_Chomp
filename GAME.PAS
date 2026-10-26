@@ -313,6 +313,12 @@ begin
   floatingTexts[idx].endTick := gameTime + 2.0;
 end;
 
+function IsSpeechDone: boolean;
+begin
+  IsSpeechDone := speechRow >= high(SpeechLines) + 1
+end;
+
+
 { Engine region }
 
 procedure UnsafeSpr(const tex: TTexture; const x, y: integer);
@@ -488,8 +494,10 @@ begin
     lastLeftMouse := leftMouse;
 
     if (actualGameState = GameStateWin)
-      and (winPhase = WinPhaseHeroSpeech) then
-        winPhase := WinPhaseDone;
+      and (winPhase = WinPhaseHeroSpeech) then begin
+        if IsSpeechDone then
+          winPhase := WinPhaseDone;
+      end;
   end;
 
   if actualGameState = GameStateTitle then begin
@@ -905,7 +913,7 @@ begin
               VGAWidth shr 1,
               HeroSpeechBoxY + 10 + a * 10);
 
-        if speechRow >= length(SpeechLines) then begin
+        if IsSpeechDone then begin
           s := '(Click to continue)';
           w := MeasureDefault(s);
           PrintDefault(s, VGAWidth - 10 - w, VGAHeight - 20);

@@ -1,3 +1,9 @@
+## Names in use
+
+- "Snack Chomp" is the internal name
+- "Tribute to DOSBox submission" is the itch.io slug
+- "Snackline" is the game title
+
 ## Directories for release
 
 - `dos` contains the DOSBox config used by js-dos v7

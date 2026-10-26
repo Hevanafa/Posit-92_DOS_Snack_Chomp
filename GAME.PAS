@@ -315,7 +315,7 @@ end;
 
 function IsSpeechDone: boolean;
 begin
-  IsSpeechDone := speechRow >= high(SpeechLines) + 1
+  IsSpeechDone := speechRow >= (high(SpeechLines) + 1)
 end;
 
 
@@ -656,7 +656,7 @@ begin
     end;
 
     if winphase = WinPhaseHeroSpeech then begin
-      if speechRow < high(SpeechLines) then begin
+      if not IsSpeechDone then begin
         if speechCol < length(SpeechLines[speechRow]) then
           inc(speechCol)
         else begin
@@ -899,6 +899,10 @@ begin
           (VGAWidth - texKaylaPortrait.width) shr 1,
           0);
 
+        { PrintDefault(
+          '{ row: ' + I32Str(speechRow)
+          + ', col: ' + I32Str(speechCol) + '}', 8, 8); }
+
         if isBlinkingVisible then
           RectFill(
             20, HeroSpeechBoxY,
@@ -916,7 +920,7 @@ begin
         if IsSpeechDone then begin
           s := '(Click to continue)';
           w := MeasureDefault(s);
-          PrintDefault(s, VGAWidth - 10 - w, VGAHeight - 20);
+          PrintDefault(s, VGAWidth - 10 - w, VGAHeight - 40);
         end;
 
         if speechCol > 0 then begin

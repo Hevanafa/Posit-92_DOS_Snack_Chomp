@@ -112,6 +112,8 @@ const
   GoodFoodDuration = 0.25;
   BadFoodDuration = 0.5;
 
+  HeroSpeechBoxY = 150;
+
 var
   lastLeftMouse: boolean;
 
@@ -470,6 +472,7 @@ var
   a, pick: integer;
 begin
   now := GetTimer;
+  isBlinkingVisible := not isBlinkingVisible;
 
   { Handle inputs }
 
@@ -509,7 +512,6 @@ begin
     { Handle inputs }
 
     isMouthOpen := not IsKeyDown(SC_SPACE);
-    isBlinkingVisible := not isBlinkingVisible;
 
     { Handle gameplay state }
 
@@ -890,15 +892,26 @@ begin
           0);
 
         if isBlinkingVisible then
-          RectFill(20, 150, VGAWidth - 20, VGAHeight - 10, $00);
+          RectFill(
+            20, HeroSpeechBoxY,
+            VGAWidth - 20, HeroSpeechBoxY + 40,
+            $00);
 
         if speechRow > 0 then
           for a:=0 to speechRow - 1 do
-            PrintCentred(fontP92SansBold, SpeechLines[a], VGAWidth shr 1, 160 + a * 10);
+            PrintCentred(
+              fontP92SansBold,
+              SpeechLines[a],
+              VGAWidth shr 1,
+              HeroSpeechBoxY + 10 + a * 10);
 
         if speechCol > 0 then begin
           s := copy(SpeechLines[speechRow], 1, speechCol);
-          PrintCentred(fontP92SansBold, s, VGAWidth shr 1, 160 + speechRow * 10);
+          PrintCentred(
+            fontP92SansBold,
+            s,
+            VGAWidth shr 1,
+            HeroSpeechBoxY + 10 + speechRow * 10);
         end;
       end;
       { TODO: WinPhaseDone }

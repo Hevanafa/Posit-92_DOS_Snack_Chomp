@@ -1,7 +1,13 @@
 ## Building
 
 1. Open `GAME.PAS` in Turbo Pascal 7
-2. Open **Compile** menu, then click **Build**, or `Alt+C` then `B`
+2. Add `ENGINE;UNITS` in the directories list (**Options > Directories**), after `C:\TP\UNITS`
+
+   It looks more or less like this combined:
+   
+   `C:\TP\UNITS;ENGINE;UNITS`
+
+3. Open **Compile** menu, then click **Build**, or `Alt+C` then `B`
 
 ## Names in use
 

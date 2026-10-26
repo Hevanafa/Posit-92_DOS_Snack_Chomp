@@ -14,6 +14,7 @@ var
 
   texPipe, texGooWipe,
   texLemon, texCookie, texBomb,
+  texTitleArt,
   texKaylaNormal, texKaylaOpen, texKaylaPortrait,
   texHeartFill, texHeartEmpty: TTexture;
 

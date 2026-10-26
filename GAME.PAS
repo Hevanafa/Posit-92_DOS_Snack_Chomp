@@ -41,8 +41,8 @@ const
 {$ifdef release}
   MaxFullness = 1.0;
 {$else}
-  MaxFullness = 1.0;
-  { MaxFullness = 0.1; }
+  { MaxFullness = 1.0; }
+  MaxFullness = 0.1;
 {$endif}
 
   WinTransitionDuration = 2.0;
@@ -373,6 +373,8 @@ begin
   LoadTex(texLemon, 'IMG\LEMON.BMP');
   LoadTex(texCookie, 'IMG\COOKIE.BMP');
   LoadTex(texBomb, 'IMG\BOMB.BMP');
+
+  LoadTex(texTitleArt, 'IMG\TITLE.BMP');
 
   LoadTex(texKaylaNormal, 'IMG\KAY_NORM.BMP');
   LoadTex(texKaylaOpen, 'IMG\KAY_OPEN.BMP');
@@ -751,6 +753,8 @@ begin
   { HUD & overlay stuff }
 
   if actualGameState = GameStateTitle then begin
+    Spr(texTitleArt, (VGAWidth - texTitleArt.width) shr 1, 20);
+
     s := 'Press Spacebar to start';
     w := MeasureDefault(s);
 
@@ -857,10 +861,13 @@ begin
           (VGAWidth - texKaylaPortrait.width) shr 1,
           0);
 
+        if speechRow > 0 then
+          for a:=0 to speechRow - 1 do
+            PrintCentred(fontP92SansBold, SpeechLines[a], VGAWidth shr 1, 150 + a * 10);
+
         if speechCol > 0 then begin
-          s := copy(SpeechLine, 1, speechCol);
-          w := MeasureDefault(s);
-          PrintDefault(s, (VGAWidth - w) shr 1, 150);
+          s := copy(SpeechLines[speechRow], 1, speechCol);
+          PrintCentred(fontP92SansBold, s, (VGAWidth - w) shr 1, 150 + speechRow * 10);
         end;
       end;
     end;

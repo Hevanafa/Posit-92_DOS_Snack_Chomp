@@ -866,8 +866,7 @@ begin
           portraitY);
       end;
 
-      WinPhaseHeroSpeech,
-      WinPhaseDone: begin
+      WinPhaseHeroSpeech: begin
         cls(160);
 
         spr(
@@ -875,15 +874,19 @@ begin
           (VGAWidth - texKaylaPortrait.width) shr 1,
           0);
 
+        if isBlinkingVisible then
+          RectFill(20, 150, VGAWidth - 20, VGAHeight - 10, $00);
+
         if speechRow > 0 then
           for a:=0 to speechRow - 1 do
-            PrintCentred(fontP92SansBold, SpeechLines[a], VGAWidth shr 1, 150 + a * 10);
+            PrintCentred(fontP92SansBold, SpeechLines[a], VGAWidth shr 1, 160 + a * 10);
 
         if speechCol > 0 then begin
           s := copy(SpeechLines[speechRow], 1, speechCol);
-          PrintCentred(fontP92SansBold, s, VGAWidth shr 1, 150 + speechRow * 10);
+          PrintCentred(fontP92SansBold, s, VGAWidth shr 1, 160 + speechRow * 10);
         end;
       end;
+      { TODO: WinPhaseDone }
     end;
   end;
 

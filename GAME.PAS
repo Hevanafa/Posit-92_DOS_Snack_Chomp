@@ -875,7 +875,7 @@ begin
 
         if speechCol > 0 then begin
           s := copy(SpeechLines[speechRow], 1, speechCol);
-          PrintCentred(fontP92SansBold, s, (VGAWidth - w) shr 1, 150 + speechRow * 10);
+          PrintCentred(fontP92SansBold, s, VGAWidth shr 1, 150 + speechRow * 10);
         end;
       end;
     end;

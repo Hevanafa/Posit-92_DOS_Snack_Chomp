@@ -962,9 +962,9 @@ begin
       end;
 
       WinPhaseHeroSpeech: begin
-        cls(160);
+        Cls(160);
 
-        spr(
+        Spr(
           texKaylaPortrait,
           (VGAWidth - texKaylaPortrait.width) shr 1,
           0);
@@ -1014,7 +1014,21 @@ begin
             HeroSpeechBoxY + 10 + speechRow * 10);
         end;
       end;
-      { TODO: WinPhaseDone }
+
+      WinPhaseDone: begin
+        Cls(160);
+
+        Spr(texKaylaPortrait, 8, 0);
+
+        PrintDefault(
+          'Thanks for playing!',
+          VGAWidth shr 1, (VGAHeight shr 1) - 10);
+
+        if frac(now) >= 0.5 then
+          PrintDefault(
+            'Press ENTER to return to title',
+            VGAWidth shr 1, (VGAHeight shr 1) + 10);
+      end;
     end;
   end;
 

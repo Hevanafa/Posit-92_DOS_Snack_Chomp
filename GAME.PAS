@@ -905,6 +905,12 @@ begin
               VGAWidth shr 1,
               HeroSpeechBoxY + 10 + a * 10);
 
+        if speechRow >= length(SpeechLines) then begin
+          s := '(Click to continue)';
+          w := MeasureDefault(s);
+          PrintDefault(s, VGAWidth - 10 - w, VGAHeight - 20);
+        end;
+
         if speechCol > 0 then begin
           s := copy(SpeechLines[speechRow], 1, speechCol);
           PrintCentred(

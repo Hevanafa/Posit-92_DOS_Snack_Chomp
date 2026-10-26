@@ -341,13 +341,20 @@ end;
 
 { Engine region }
 
+{ Unsafe: No bounds checking }
 procedure RectDarken(const x0, y0, x1, y1: integer);
 var
   a, b: integer;
+  srcOffset: word;
 begin
   for b:=y0 to y1 do
     for a:=x0 to x1 do begin
+      srcOffset := b * VGAWidth + a;
 
+      if backBuffer[srcOffset] in [$08..$0F] then
+        backBuffer[srcOffset] := backBuffer[srcOffset] - 8
+      else if backBuffer[srcOffset] in [$20..$67] then
+        backBuffer[srcOffset] := backBuffer[srcOffset] + $48;
     end;
 end;
 
@@ -936,11 +943,15 @@ begin
           + ', col: ' + I32Str(speechCol) + ']', 8, 8); }
 
         { Flickering RPG dialogue box }
-        if isBlinkingVisible then
+        { if isBlinkingVisible then
           RectFill(
             20, HeroSpeechBoxY,
             VGAWidth - 20, HeroSpeechBoxY + 40,
-            $00);
+            $00); }
+
+        RectDarken(
+          20, HeroSpeechBoxY,
+          VGAWidth - 20, HeroSpeechBoxY + 40);
 
         PrintBMFontTint(fontP92SansBold, HeroName, 20, HeroSpeechBoxY, HeroNameColour);
 

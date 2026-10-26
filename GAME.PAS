@@ -320,6 +320,24 @@ begin
   IsSpeechDone := speechRow >= (high(SpeechLines) + 1)
 end;
 
+function GetFoodName(const food: TFoodType): string;
+var
+  result: string;
+begin
+  result := '';
+
+  case food of
+    FoodCookie:
+      result := 'Cookie';
+    FoodLemon:
+      result := 'Lemon';
+    FoodBomb:
+      result := 'Bomb';
+  end;
+
+  GetFoodName := result
+end;
+
 
 { Engine region }
 
@@ -576,7 +594,7 @@ begin
               fullness := fullness + 0.05;
               fullnessPercStartTick := gameTime;
 
-              SpawnFloatingText('+1', JudgementX, 100);
+              SpawnFloatingText('+1 ' + GetFoodName(foodList[a].foodType), JudgementX, 100);
 
               goodFoodStartTick := gameTime;
 

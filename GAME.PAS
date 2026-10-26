@@ -197,9 +197,6 @@ begin
   isBlinkingVisible := true;
   isMouthOpen := false;
 
-  countdownNumber := 3;
-  countdownNextTick := GetTimer + 1.0;
-
   nextSpawnTick := 2.0;
 
   headOffsetX := 0;
@@ -210,6 +207,12 @@ begin
   isLostHeartVisible := false;
 
   RewindSprAnim(0.0, charHeadStartTick, charHeadFrameIdx);
+end;
+
+procedure ResetCountdownState;
+begin
+  countdownNumber := 3;
+  countdownNextTick := GetTimer + 1.0;
 end;
 
 procedure InitPlayingState;
@@ -472,13 +475,16 @@ begin
 {$endif}
 
   if actualGameState = GameStateTitle then begin
-    if IsKeyDown(SC_SPACE) then
+    if IsKeyDown(SC_SPACE) then begin
+      ResetCountdownState;
       InitPlayingState;
+    end;
   end;
 
   if actualGameState = GameStateLose then begin
     if IsKeyDown(SC_ENTER) then begin
       ResetGameplayState;
+      ResetCountdownState;
       InitPlayingState;
     end;
   end;

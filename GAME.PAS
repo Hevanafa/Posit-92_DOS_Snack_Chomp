@@ -902,8 +902,8 @@ begin
           0);
 
         { PrintDefault(
-          '{ row: ' + I32Str(speechRow)
-          + ', col: ' + I32Str(speechCol) + '}', 8, 8); }
+          '[row: ' + I32Str(speechRow)
+          + ', col: ' + I32Str(speechCol) + ']', 8, 8); }
 
         { Flickering RPG dialogue box }
         if isBlinkingVisible then

@@ -723,9 +723,9 @@ begin
         inc(winPhase);
         winPhaseTimer := 0.0;
       end;
-    end;
+    end
 
-    if winphase = WinPhaseHeroSpeech then begin
+    else if winPhase = WinPhaseHeroSpeech then begin
       if not IsSpeechDone then begin
         if speechCol < length(SpeechLines[speechRow]) then
           inc(speechCol)
@@ -733,6 +733,13 @@ begin
           inc(speechRow);
           speechCol := 1;
         end;
+      end;
+    end
+
+    else if winPhase = WinPhaseDone then begin
+      if IsKeyDown(SC_ENTER) then begin
+        InitTitleState;
+        ResetGameplayState;
       end;
     end;
   end;
@@ -1005,7 +1012,7 @@ begin
         end;
 
         if speechCol > 0 then begin
-          s := copy(SpeechLines[speechRow], 1, speechCol);
+          s := Copy(SpeechLines[speechRow], 1, speechCol);
 
           PrintCentred(
             fontP92SansBold,

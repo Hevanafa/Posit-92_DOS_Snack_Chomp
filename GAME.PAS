@@ -351,11 +351,21 @@ begin
     for a:=x0 to x1 do begin
       srcOffset := b * VGAWidth + a;
 
+      case backBuffer^[srcOffset] of
+        $08..$0F, $18..$1F:
+          backBuffer^[srcOffset] := backBuffer^[srcOffset] - 8;
+        $20..$67:
+          backBuffer^[srcOffset] := backBuffer^[srcOffset] + $48;
+        else
+      end;
+
+      {
       if (backBuffer^[srcOffset] in [$08..$0F])
         or (backBuffer^[srcOffset] in [$18..$1F]) then
         backBuffer^[srcOffset] := backBuffer^[srcOffset] - 8
       else if backBuffer^[srcOffset] in [$20..$67] then
         backBuffer^[srcOffset] := backBuffer^[srcOffset] + $48;
+      }
     end;
 end;
 

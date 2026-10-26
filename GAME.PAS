@@ -341,6 +341,16 @@ end;
 
 { Engine region }
 
+procedure RectDarken(const x0, y0, x1, y1: integer);
+var
+  a, b: integer;
+begin
+  for b:=y0 to y1 do
+    for a:=x0 to x1 do begin
+
+    end;
+end;
+
 procedure UnsafeSpr(const tex: TTexture; const x, y: integer);
 const
   TransparencyKey = 13;
@@ -499,6 +509,8 @@ var
 begin
   now := GetTimer;
   isBlinkingVisible := not isBlinkingVisible;
+
+  RectDarken();
 
   { Handle inputs }
 

@@ -1024,10 +1024,15 @@ begin
           'Thanks for playing!',
           VGAWidth shr 1, (VGAHeight shr 1) - 10);
 
-        if frac(now) >= 0.5 then
+        if frac(now) >= 0.5 then begin
           PrintDefault(
-            'Press ENTER to return to title',
+            'Press ENTER to',
             VGAWidth shr 1, (VGAHeight shr 1) + 10);
+
+          PrintDefault(
+            'return to title',
+            VGAWidth shr 1, (VGAHeight shr 1) + 20);
+        end;
       end;
     end;
   end;

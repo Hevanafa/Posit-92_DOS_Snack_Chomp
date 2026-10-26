@@ -113,6 +113,8 @@ const
   BadFoodDuration = 0.5;
 
 var
+  lastLeftMouse: boolean;
+
   { Game state variables }
   actualGameState: TGameState;
 
@@ -181,6 +183,8 @@ end;
 procedure ResetGameplayState;
 begin
   RandSeed := trunc(GetTimer);
+
+  lastLeftMouse := false;
 
   gameTime := 0.0;
   { score := 0; }
@@ -462,6 +466,7 @@ end;
 procedure Update; far;
 var
   now: double;
+  leftMouse: boolean;
   a, pick: integer;
 begin
   now := GetTimer;
@@ -473,6 +478,16 @@ begin
 {$else}
   if IsKeyDown(SC_LEFT_SHIFT) and IsKeyDown(SC_Q) then SignalDone;
 {$endif}
+
+  leftMouse := (GetMouseButton and MouseButtonLeft) <> 0;
+
+  if lastLeftMouse <> leftMouse then begin
+    lastLeftMouse := leftMouse;
+
+    if (actualGameState = GameStateWin)
+      and (winPhase = WinPhaseHeroSpeech) then
+        winPhase := WinPhaseDone;
+  end;
 
   if actualGameState = GameStateTitle then begin
     if IsKeyDown(SC_SPACE) then begin

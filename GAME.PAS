@@ -753,7 +753,7 @@ begin
   { HUD & overlay stuff }
 
   if actualGameState = GameStateTitle then begin
-    Spr(texTitleArt, (VGAWidth - texTitleArt.width) shr 1, 20);
+    Spr(texTitleArt, (VGAWidth - texTitleArt.width) shr 1, 40);
 
     s := 'Press Spacebar to start';
     w := MeasureDefault(s);
@@ -766,6 +766,14 @@ begin
       (VGAWidth - w) shr 1,
       100,
       colour);
+
+    PrintCentred(fontP92SansBoldBlack,
+      'A game by Hevanafa',
+      VGAWidth shr 1, VGAHeight - 30);
+
+    PrintCentred(fontP92SansBoldBlack,
+      'Made for the Tribute for DOSBox game jam (Oct 2026)',
+      VGAWidth shr 1, VGAHeight - 20);
   end;
 
 

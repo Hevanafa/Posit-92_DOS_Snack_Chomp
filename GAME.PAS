@@ -351,10 +351,11 @@ begin
     for a:=x0 to x1 do begin
       srcOffset := b * VGAWidth + a;
 
-      if backBuffer[srcOffset] in [$08..$0F] then
-        backBuffer[srcOffset] := backBuffer[srcOffset] - 8
-      else if backBuffer[srcOffset] in [$20..$67] then
-        backBuffer[srcOffset] := backBuffer[srcOffset] + $48;
+      if (backBuffer^[srcOffset] in [$08..$0F])
+        or (backBuffer^[srcOffset] in [$18..$1F]) then
+        backBuffer^[srcOffset] := backBuffer^[srcOffset] - 8
+      else if backBuffer^[srcOffset] in [$20..$67] then
+        backBuffer^[srcOffset] := backBuffer^[srcOffset] + $48;
     end;
 end;
 
@@ -516,8 +517,6 @@ var
 begin
   now := GetTimer;
   isBlinkingVisible := not isBlinkingVisible;
-
-  RectDarken();
 
   { Handle inputs }
 
@@ -966,7 +965,7 @@ begin
         if IsSpeechDone then begin
           s := '(Click to continue)';
           w := MeasureDefault(s);
-          PrintDefault(s, VGAWidth - 10 - w, VGAHeight - 40);
+          PrintDefault(s, VGAWidth - 10 - w, HeroSpeechBoxY + 40);
         end;
 
         if speechCol > 0 then begin

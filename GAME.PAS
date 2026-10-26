@@ -113,6 +113,7 @@ const
   BadFoodDuration = 0.5;
 
   HeroName = 'Kayla the latex sharky';
+  HeroNameColour = 59;
   HeroSpeechBoxY = 150;
 
 var
@@ -911,7 +912,7 @@ begin
             VGAWidth - 20, HeroSpeechBoxY + 40,
             $00);
 
-        PrintDefault(HeroName, 20, HeroSpeechBoxY);
+        PrintBMFontTint(fontP92SansBold, HeroName, 20, HeroSpeechBoxY, HeroNameColour);
 
         if speechRow > 0 then
           for a:=0 to speechRow - 1 do

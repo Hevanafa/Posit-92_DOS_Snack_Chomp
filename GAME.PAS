@@ -112,6 +112,7 @@ const
   GoodFoodDuration = 0.25;
   BadFoodDuration = 0.5;
 
+  HeroName = 'Kayla the latex sharky';
   HeroSpeechBoxY = 150;
 
 var
@@ -903,11 +904,14 @@ begin
           '{ row: ' + I32Str(speechRow)
           + ', col: ' + I32Str(speechCol) + '}', 8, 8); }
 
+        { Flickering RPG dialogue box }
         if isBlinkingVisible then
           RectFill(
             20, HeroSpeechBoxY,
             VGAWidth - 20, HeroSpeechBoxY + 40,
             $00);
+
+        PrintDefault(HeroName, 20, HeroSpeechBoxY);
 
         if speechRow > 0 then
           for a:=0 to speechRow - 1 do
@@ -925,6 +929,7 @@ begin
 
         if speechCol > 0 then begin
           s := copy(SpeechLines[speechRow], 1, speechCol);
+
           PrintCentred(
             fontP92SansBold,
             s,

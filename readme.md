@@ -1,3 +1,8 @@
+## Building
+
+1. Open `GAME.PAS` in Turbo Pascal 7
+2. Open **Compile** menu, then click **Build**, or `Alt+C` then `B`
+
 ## Names in use
 
 - "Snack Chomp" is the internal name

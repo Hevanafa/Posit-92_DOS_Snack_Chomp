@@ -17,7 +17,8 @@ library Game;
 program Game;
 {$ENDIF}
 
-{Define Release}
+{$Define Release}
+{$Define DOSBOX}
 
 uses
   CRT, DOS,
@@ -564,10 +565,14 @@ begin
 
   { Handle inputs }
 
-{$ifndef release}
-  if IsKeyDown(SC_ESCAPE) then SignalDone;
+{$ifdef release}
+  {$ifdef dosbox}
+    if IsKeyDown(SC_ESCAPE) then SignalDone;
+  {$else}
+    if IsKeyDown(SC_LEFT_SHIFT) and IsKeyDown(SC_Q) then SignalDone;
+  {$endif}
 {$else}
-  if IsKeyDown(SC_LEFT_SHIFT) and IsKeyDown(SC_Q) then SignalDone;
+  if IsKeyDown(SC_ESCAPE) then SignalDone;
 {$endif}
 
   leftMouse := (GetMouseButton and MouseButtonLeft) <> 0;

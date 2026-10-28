@@ -28,6 +28,7 @@ uses
   ASSETS;
 
 const
+  GameVersion = '0.1';
   TwoPi = 2 * Pi;
 
   { in seconds }

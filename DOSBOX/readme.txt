@@ -12,7 +12,9 @@ Requirements:
 - VGA graphics
 - PC speaker for sound effects
 
-Run GAME.EXE to play
+Starting the game:
+On Windows: run or double click start.bat
+On DOS: run GAME.EXE
 
 Controls:
 - SPACE - close mouth

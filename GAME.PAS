@@ -441,8 +441,8 @@ end;
 { Load assets here }
 procedure OnPreload; far;
 begin
-  LoadTex(texSpecimenP92[0], 'IMG\SPP92_1.DAT');
-  LoadTex(texSpecimenP92[1], 'IMG\SPP92_2.DAT');
+  { LoadTex(texSpecimenP92[0], 'IMG\SPP92_1.DAT');
+  LoadTex(texSpecimenP92[1], 'IMG\SPP92_2.DAT'); }
 
   LoadTex(texLemon, 'IMG\LEMON.DAT');
   LoadTex(texCookie, 'IMG\COOKIE.DAT');

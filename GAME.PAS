@@ -440,27 +440,27 @@ end;
 { Load assets here }
 procedure OnPreload; far;
 begin
-  LoadTex(texSpecimenP92[0], 'IMG\SPP92_1.BMP');
-  LoadTex(texSpecimenP92[1], 'IMG\SPP92_2.BMP');
+  LoadTex(texSpecimenP92[0], 'IMG\SPP92_1.DAT');
+  LoadTex(texSpecimenP92[1], 'IMG\SPP92_2.DAT');
 
-  LoadTex(texLemon, 'IMG\LEMON.BMP');
-  LoadTex(texCookie, 'IMG\COOKIE.BMP');
-  LoadTex(texBomb, 'IMG\BOMB.BMP');
+  LoadTex(texLemon, 'IMG\LEMON.DAT');
+  LoadTex(texCookie, 'IMG\COOKIE.DAT');
+  LoadTex(texBomb, 'IMG\BOMB.DAT');
 
-  LoadTex(texTitleArt, 'IMG\TITLE.BMP');
+  LoadTex(texTitleArt, 'IMG\TITLE.DAT');
 
-  LoadTex(texKaylaNormal, 'IMG\KAY_NORM.BMP');
-  LoadTex(texKaylaOpen, 'IMG\KAY_OPEN.BMP');
-  LoadTex(texKaylaPortrait, 'IMG\KAY_FULL.BMP');
+  LoadTex(texKaylaNormal, 'IMG\KAY_NORM.DAT');
+  LoadTex(texKaylaOpen, 'IMG\KAY_OPEN.DAT');
+  LoadTex(texKaylaPortrait, 'IMG\KAY_FULL.DAT');
 
-  LoadTex(texSheetKaylaOpen, 'IMG\XKAYOPEN.BMP');
-  LoadTex(texSheetBomb, 'IMG\XBOMB.BMP');
+  LoadTex(texSheetKaylaOpen, 'IMG\XKAYOPEN.DAT');
+  LoadTex(texSheetBomb, 'IMG\XBOMB.DAT');
 
-  LoadTex(texHeartEmpty, 'IMG\HRTEMPTY.BMP');
-  LoadTex(texHeartFill, 'IMG\HRTFILL.BMP');
+  LoadTex(texHeartEmpty, 'IMG\HRTEMPTY.DAT');
+  LoadTex(texHeartFill, 'IMG\HRTFILL.DAT');
 
-  LoadTex(texPipe, 'IMG\PIPE.BMP');
-  LoadTex(texGooWipe, 'IMG\WIPE.BMP');
+  LoadTex(texPipe, 'IMG\PIPE.DAT');
+  LoadTex(texGooWipe, 'IMG\WIPE.DAT');
 
   LoadBMFont(fontP92SansBold, 'FONTS\P92SAN8B.TXT');
   LoadBMFont(fontX14y20pxScoreDozer, 'FONTS\SCOREDOZ.TXT');

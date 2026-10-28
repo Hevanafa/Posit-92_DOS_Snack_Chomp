@@ -17,3 +17,8 @@ LOG.TXT
 DIST/
 builds/
 web/game.zip
+
+# DOSBox stuff
+DOSBox.exe
+SDL_net.dll
+SDL.dll

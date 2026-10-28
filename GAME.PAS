@@ -900,6 +900,11 @@ begin
     PrintCentred(fontP92SansBoldBlack,
       'Made for the Tribute for DOSBox game jam (Oct 2026)',
       VGAWidth shr 1, VGAHeight - 20);
+
+    s := 'Snackline v' + GameVersion;
+    w := MeasureDefault(s);
+
+    PrintBlack(s, VGAWidth - 8 - w, VGAHeight - fontP92SansBold.lineHeight);
   end;
 
 
